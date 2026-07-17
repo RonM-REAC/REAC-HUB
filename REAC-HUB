@@ -333,35 +333,23 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .online-empty { font-size:12px; color:var(--text3); font-family:var(--font-mono); }
 .online-last-refresh { font-family:var(--font-mono); font-size:9px; color:var(--text3); }
 
-/* ── TOP 5 FLOATING WIDGET ────────────────────────────────────── */
-.top5-widget { position:fixed; z-index:500; width:240px; background:var(--auth-card-bg); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 40px rgba(0,0,0,.5); backdrop-filter:blur(20px); user-select:none; display:none; bottom:20px; right:20px; overflow:hidden; }
-.top5-widget.visible { display:block; }
-.top5-header { display:flex; align-items:center; justify-content:space-between; padding:9px 12px; background:rgba(120,120,120,.08); border-bottom:1px solid var(--border2); cursor:grab; }
-.top5-title { font-family:var(--font-head); font-size:9px; color:var(--neon); letter-spacing:.18em; text-transform:uppercase; display:flex; align-items:center; gap:6px; }
-.top5-title-dot { width:6px; height:6px; border-radius:50%; background:var(--neon); box-shadow:0 0 6px var(--neon); animation:blink 1.5s infinite; }
-.top5-header-right { display:flex; align-items:center; gap:6px; }
-.top5-refresh-time { font-family:var(--font-mono); font-size:8px; color:var(--text3); }
-.top5-close { width:18px; height:18px; border-radius:50%; border:1px solid rgba(255,77,109,.35); background:rgba(255,77,109,.1); color:var(--danger); font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
-.top5-body { padding:8px 0; }
-.top5-row { display:flex; align-items:center; gap:10px; padding:7px 12px; border-bottom:1px solid var(--border2); }
-.top5-row:last-child { border-bottom:none; }
-@keyframes rowFlash { 0%{background:rgba(0,255,231,.15)} 100%{background:transparent} }
-.top5-row.changed { animation:rowFlash .8s ease; }
-.top5-pos { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:10px; font-weight:700; flex-shrink:0; }
-.top5-pos.p1 { background:rgba(255,215,0,.15); border:1px solid rgba(255,215,0,.5); color:var(--gold); }
-.top5-pos.p2 { background:rgba(192,192,192,.1); border:1px solid rgba(192,192,192,.35); color:var(--silver); }
-.top5-pos.p3 { background:rgba(205,127,50,.1); border:1px solid rgba(205,127,50,.35); color:var(--bronze); }
-.top5-pos.p4, .top5-pos.p5 { background:rgba(55,138,221,.07); border:1px solid rgba(55,138,221,.2); color:#378ADD; }
-.top5-agent-info { flex:1; min-width:0; }
-.top5-agent-name { font-size:12px; color:var(--text); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.top5-agent-tl { font-family:var(--font-mono); font-size:9px; color:var(--text3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.top5-medal { font-size:14px; flex-shrink:0; }
-.top5-footer { padding:6px 12px; border-top:1px solid var(--border2); display:flex; align-items:center; justify-content:space-between; background:rgba(0,0,0,.08); }
-.top5-footer-label { font-family:var(--font-mono); font-size:8px; color:var(--text3); text-transform:uppercase; }
-.top5-period { font-family:var(--font-mono); font-size:8px; color:var(--neon); }
-.top5-toggle-btn { position:fixed; z-index:499; bottom:22px; right:270px; background:var(--bg3); border:1px solid var(--neon); border-radius:8px; color:var(--neon); font-family:var(--font-mono); font-size:10px; padding:6px 10px; cursor:pointer; display:none; align-items:center; gap:5px; }
-.top5-toggle-btn.visible { display:flex; }
-.top5-toggle-btn svg { width:11px; height:11px; stroke:currentColor; }
+/* ── RIGHT SIDEBAR: PLACE HOLDER / QUICK LINKS ─────────────────── */
+.rsidebar { width:220px; height:100%; flex-shrink:0; background:var(--sidebar-bg); border-left:1px solid var(--sidebar-border); display:flex; flex-direction:column; position:relative; overflow:hidden; box-shadow:-4px 0 30px rgba(0,0,0,.3); transition:width .3s cubic-bezier(.4,0,.2,1),min-width .3s cubic-bezier(.4,0,.2,1); min-width:220px; }
+.rsidebar.collapsed { width:0 !important; min-width:0 !important; }
+.rsidebar-header { padding:1.2rem 1.1rem .9rem; border-bottom:1px solid var(--sidebar-border); flex-shrink:0; }
+.rsidebar-header h3 { font-family:var(--font-head); font-size:10px; color:var(--neon); letter-spacing:.18em; text-transform:uppercase; display:flex; align-items:center; gap:7px; }
+.rsidebar-header p { font-size:10.5px; color:var(--text3); margin-top:4px; font-family:var(--font-mono); }
+.rsidebar-body { flex:1; overflow-y:auto; padding:.8rem; }
+.rsidebar-body::-webkit-scrollbar { width:0; }
+.rlink-item { display:flex; align-items:center; gap:10px; padding:10px 11px; border-radius:8px; margin-bottom:7px; cursor:pointer; background:rgba(120,120,120,.04); border:1px solid var(--border2); transition:.15s; }
+.rlink-item:hover { border-color:var(--neon); background:rgba(0,255,231,.06); transform:translateX(-2px); }
+.rlink-icon { width:28px; height:28px; border-radius:7px; background:rgba(0,255,231,.08); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+.rlink-label { font-size:12.5px; color:var(--text); font-weight:600; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rlink-ext { font-size:10px; color:var(--text3); flex-shrink:0; }
+.rsidebar-empty { text-align:center; padding:30px 12px; color:var(--text3); font-size:11.5px; font-family:var(--font-mono); }
+.rsidebar-toggle-btn { position:absolute; top:50%; left:-14px; transform:translateY(-50%); z-index:100; width:28px; height:28px; background:var(--sidebar-bg); border:1px solid var(--sidebar-border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text2); }
+.rsidebar-open-btn { position:fixed; top:50%; right:0; transform:translateY(-50%); z-index:200; width:24px; height:48px; background:var(--sidebar-bg); border:1px solid var(--sidebar-border); border-right:none; border-radius:8px 0 0 8px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text2); opacity:0; pointer-events:none; }
+.rsidebar-open-btn.visible { opacity:1; pointer-events:all; }
 </style>
 </head>
 <body>
@@ -504,7 +492,7 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
   </div>
 </div>
 
-<!-- ═══ MAIN APP (single shared shell for Agent / Team Lead / Admin / Senior POC) ═══ -->
+<!-- ═══ MAIN APP (single shared shell for Agent / Team Lead / Admin / Master Admin) ═══ -->
 <div id="s-app" class="screen app-screen">
   <div class="sidebar-open-btn" id="app-open-btn" onclick="toggleSidebar()">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -545,21 +533,23 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
         <div class="no-data"><div class="nd-icon">⚡</div>Loading your data...</div>
       </div>
     </div>
+    <div class="rsidebar" id="app-rsidebar">
+      <div class="rsidebar-toggle-btn" onclick="toggleRSidebar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="rsidebar-header">
+        <h3>⬡ Quick Links</h3>
+        <p>Place Holder resources</p>
+      </div>
+      <div class="rsidebar-body" id="rsidebar-body">
+        <div class="rsidebar-empty">Loading…</div>
+      </div>
+    </div>
+  </div>
+  <div class="rsidebar-open-btn" id="rsidebar-open-btn" onclick="toggleRSidebar()">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
   </div>
 </div>
-
-<!-- TOP 5 FLOATING WIDGET (admin + team lead only) -->
-<div class="top5-widget" id="top5-widget">
-  <div class="top5-header" id="top5-drag-handle">
-    <div class="top5-title"><span class="top5-title-dot"></span>LIVE TOP 5</div>
-    <div class="top5-header-right"><span class="top5-refresh-time" id="top5-refresh-label">—</span><button class="top5-close" onclick="hideTop5Widget()">✕</button></div>
-  </div>
-  <div class="top5-body" id="top5-body"><div style="padding:16px 12px;text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--text3)">Loading...</div></div>
-  <div class="top5-footer"><span class="top5-footer-label">Placements only</span><span class="top5-period" id="top5-period-label">—</span></div>
-</div>
-<button class="top5-toggle-btn" id="top5-show-btn" onclick="showTop5Widget()">
-  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l4-4 4 4"/><path d="M12 2v10"/><path d="M4 20h16"/><path d="M4 14l4 3h8l4-3"/></svg>TOP 5
-</button>
 
 <div id="toast"></div>
 <input type="file" id="pic-file-input" accept="image/*" style="display:none" onchange="handlePicFile(this.files[0])"/>
@@ -575,7 +565,6 @@ const PRESENCE_KEY       = 'reac_presence';
 const HEARTBEAT_INTERVAL = 25000;
 const PRESENCE_TTL       = 45000;
 const PRESENCE_POLL_MS   = 20000;
-const TOP5_REFRESH_MS    = 60000;
 
 let currentUser    = null;
 let allAgents       = [];
@@ -588,7 +577,7 @@ let adminMonthIdx = 0, tlMonthIdx = 0, adminBreakdownMonthIdx = 0;
 let currentTheme = 'futuristic';
 let chartInstances = {};
 let currentPage = 'dash';
-let heartbeatTimer=null, presencePollTimer=null, top5PollTimer=null, top5PrevData=[];
+let heartbeatTimer=null, presencePollTimer=null;
 
 const METRICS = [
   { key:'tps', label:'TPS', color:'#378ADD' },
@@ -598,6 +587,14 @@ const METRICS = [
 ];
 let chartMetricState = {};
 function getActiveMetrics(id){ if(!chartMetricState[id]) chartMetricState[id]=new Set(METRICS.map(m=>m.key)); return chartMetricState[id]; }
+
+// ═════════════════════════════════════════════════════════════════
+//  ROLE HELPERS
+//  Internal roles used throughout the UI: 'agent' | 'teamlead' | 'admin' | 'masteradmin'
+//  'masteradmin' is treated identically to 'admin' for data access & navigation,
+//  it only differs in the label shown in the sidebar/profile.
+// ═════════════════════════════════════════════════════════════════
+function isFullAccessRole(role){ return role==='admin' || role==='masteradmin'; }
 
 // ═════════════════════════════════════════════════════════════════
 //  THEME
@@ -649,7 +646,7 @@ document.addEventListener('click', (e)=>{
 }, true);
 
 // ═════════════════════════════════════════════════════════════════
-//  SIDEBAR
+//  SIDEBARS (left nav + right quick-links)
 // ═════════════════════════════════════════════════════════════════
 let sidebarOpen = true;
 function toggleSidebar() {
@@ -657,6 +654,13 @@ function toggleSidebar() {
   sidebarOpen = !sidebarOpen;
   sb.classList.toggle('collapsed', !sidebarOpen);
   ob.classList.toggle('visible', !sidebarOpen);
+}
+let rsidebarOpen = true;
+function toggleRSidebar() {
+  const sb=document.getElementById('app-rsidebar'), ob=document.getElementById('rsidebar-open-btn');
+  rsidebarOpen = !rsidebarOpen;
+  sb.classList.toggle('collapsed', !rsidebarOpen);
+  ob.classList.toggle('visible', !rsidebarOpen);
 }
 
 const ICONS = {
@@ -675,7 +679,7 @@ const ICONS = {
 function svgIcon(key){ return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${ICONS[key]||ICONS.link}</svg>`; }
 
 function coreNavForRole(role) {
-  if (role === 'admin') return [
+  if (isFullAccessRole(role)) return [
     {key:'dash',label:'Overview',icon:'dash'},
     {key:'performance',label:'Performance',icon:'perf'},
     {key:'agents',label:'All Agents',icon:'agents'},
@@ -688,7 +692,7 @@ function coreNavForRole(role) {
     {key:'scores',label:'Team Scores',icon:'scores'},
     {key:'lb',label:'Leaderboard',icon:'lb'}
   ];
-  return [ // agent + senior poc
+  return [ // agent
     {key:'dash',label:'Dashboard',icon:'dash'},
     {key:'performance',label:'Performance',icon:'perf'},
     {key:'scores',label:'My Scores',icon:'scores'}
@@ -704,13 +708,6 @@ function buildSidebar() {
     html += `<div class="nav-item${item.key===currentPage?' active':''}" data-page="${item.key}" onclick="navigateTo('${item.key}')">${svgIcon(item.icon)}${item.label}</div>`;
   });
   html += `</div>`;
-  if (placeholderLinks.length) {
-    html += `<div class="nav-section"><div class="nav-section-label">Quick Links</div>`;
-    placeholderLinks.forEach(p=>{
-      html += `<div class="nav-item" onclick="openPlaceholder('${escAttr(p.label)}','${escAttr(p.url)}')"><span style="width:15px;display:inline-flex;justify-content:center">${p.icon||'🔗'}</span>${p.label}<span class="nav-ext">↗</span></div>`;
-    });
-    html += `</div>`;
-  }
   html += `<div class="nav-section"><div class="nav-section-label">Account</div>
     <div class="nav-item${currentPage==='helpme'?' active':''}" data-page="helpme" onclick="navigateTo('helpme')">${svgIcon('help')}Help</div>
     <div class="nav-item${currentPage==='settings'?' active':''}" data-page="settings" onclick="navigateTo('settings')">${svgIcon('settings')}Settings</div>
@@ -720,10 +717,22 @@ function buildSidebar() {
   nav.innerHTML = html;
 
   document.getElementById('sidebar-portal-label').textContent =
-    role==='admin' ? 'MANAGER' : role==='teamlead' ? 'TEAM LEAD' : 'AGENT PORTAL';
+    role==='masteradmin' ? 'MASTER ADMIN' : role==='admin' ? 'MANAGER' : role==='teamlead' ? 'TEAM LEAD' : 'AGENT PORTAL';
 }
 function escAttr(s){ return String(s||'').replace(/'/g,"\\'"); }
 
+// ── RIGHT SIDEBAR: renders the "Place Holder" tab (Options / Links) ──
+function renderRightSidebar() {
+  const body = document.getElementById('rsidebar-body');
+  if (!body) return;
+  if (!placeholderLinks.length) { body.innerHTML = '<div class="rsidebar-empty">No quick links configured yet.<br/>Add rows to the "Place Holder" sheet (Options / Links).</div>'; return; }
+  body.innerHTML = placeholderLinks.map(p=>`
+    <div class="rlink-item" onclick="openPlaceholder('${escAttr(p.label)}','${escAttr(p.url)}')">
+      <div class="rlink-icon">${p.icon||'🔗'}</div>
+      <div class="rlink-label">${p.label}</div>
+      <div class="rlink-ext">↗</div>
+    </div>`).join('');
+}
 function openPlaceholder(label, url) {
   logEvent('Link Open', 'Opened quick link: ' + label);
   if (url) window.open(url, '_blank', 'noopener');
@@ -802,68 +811,6 @@ function startPresencePoll(tlFilter){ if(presencePollTimer) clearInterval(presen
 function stopPresencePoll(){ if(presencePollTimer) clearInterval(presencePollTimer); presencePollTimer=null; }
 
 // ═════════════════════════════════════════════════════════════════
-//  TOP 5 WIDGET
-// ═════════════════════════════════════════════════════════════════
-function getTop5Data() {
-  const latestIdx = latestActiveIdxAcrossAgents(allAgents);
-  if (latestIdx<0) return {rows:[],label:'—'};
-  const label = allAgents.find(a=>a.months?.[latestIdx])?.months[latestIdx]?.label||'—';
-  const active = allAgents.filter(a=>{const m=a.months?.[latestIdx]; return m&&m.count&&m.overall!=='Attrite';});
-  const sorted = [...active].sort((a,b)=>(parseInt(a.months[latestIdx]?.rank)||9999)-(parseInt(b.months[latestIdx]?.rank)||9999));
-  return { rows: sorted.slice(0,5), label, latestIdx };
-}
-const MEDALS=['🥇','🥈','🥉','',''], POS_CLS=['p1','p2','p3','p4','p5'];
-function renderTop5Body(rows, latestIdx, prevRows) {
-  const body=document.getElementById('top5-body'); if(!body) return;
-  if (!rows.length) { body.innerHTML='<div style="padding:16px 12px;text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--text3)">No data available</div>'; return; }
-  const prevOrder = prevRows.map(r=>r.email);
-  body.innerHTML = rows.map((a,i)=>{
-    const prevPos = prevOrder.indexOf(a.email);
-    const changed = prevPos!==-1 && prevPos!==i;
-    const tl = mgmtUsers.find(u=>u.email===a.teamLeadEmail);
-    return `<div class="top5-row${changed?' changed':''}"><div class="top5-pos ${POS_CLS[i]}">${i+1}</div>
-      <div class="top5-agent-info"><div class="top5-agent-name">${shortName(a.name)}</div><div class="top5-agent-tl">${tl?shortName(tl.name):'—'}</div></div>
-      <div class="top5-medal">${MEDALS[i]}</div></div>`;
-  }).join('');
-}
-function refreshTop5(force) {
-  const {rows,label,latestIdx} = getTop5Data();
-  const prevRows = top5PrevData;
-  const changed = force || rows.map(r=>r.email).join(',') !== prevRows.map(r=>r.email).join(',');
-  if (changed) {
-    if (!force && prevRows.length && rows.length && rows[0].email!==prevRows[0].email) { playNotifTone(); toast('Leaderboard update: '+shortName(rows[0].name)+' is now #1!'); }
-    renderTop5Body(rows, latestIdx, prevRows);
-    top5PrevData = rows;
-  }
-  const timeEl=document.getElementById('top5-refresh-label'), periodEl=document.getElementById('top5-period-label');
-  if (timeEl) timeEl.textContent = new Date().toLocaleTimeString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  if (periodEl) periodEl.textContent = label;
-}
-async function top5BackendRefresh() {
-  try {
-    const res = await gasGet('getData');
-    if ((res.agents||[]).length) {
-      allAgents = res.agents; mgmtUsers = res.management || mgmtUsers;
-      refreshTop5(false);
-      const role=(currentUser?.role||'').toLowerCase();
-      if (role==='teamlead') refreshOnlinePanel(currentUser.email); else if (role==='admin') refreshOnlinePanel(null);
-    }
-  } catch(e) { console.warn('Top5 refresh failed:', e.message); }
-}
-function startTop5Poll(){ if(top5PollTimer) clearInterval(top5PollTimer); refreshTop5(true); top5PollTimer=setInterval(top5BackendRefresh, TOP5_REFRESH_MS); }
-function stopTop5Poll(){ if(top5PollTimer) clearInterval(top5PollTimer); top5PollTimer=null; }
-function showTop5Widget(){ document.getElementById('top5-widget').classList.add('visible'); document.getElementById('top5-show-btn').classList.remove('visible'); refreshTop5(true); }
-function hideTop5Widget(){ document.getElementById('top5-widget').classList.remove('visible'); document.getElementById('top5-show-btn').classList.add('visible'); }
-(function initTop5Drag(){
-  const widget=document.getElementById('top5-widget'), handle=document.getElementById('top5-drag-handle');
-  let dragging=false,startX,startY,startRight,startBottom;
-  handle.addEventListener('mousedown', e=>{ dragging=true; startX=e.clientX; startY=e.clientY; const r=widget.getBoundingClientRect(); startRight=window.innerWidth-r.right; startBottom=window.innerHeight-r.bottom; e.preventDefault(); });
-  document.addEventListener('mousemove', e=>{ if(!dragging) return; const dx=e.clientX-startX, dy=e.clientY-startY;
-    widget.style.right=Math.max(0,Math.min(window.innerWidth-240,startRight-dx))+'px'; widget.style.bottom=Math.max(0,Math.min(window.innerHeight-100,startBottom-dy))+'px'; widget.style.left='auto'; widget.style.top='auto'; });
-  document.addEventListener('mouseup', ()=>dragging=false);
-})();
-
-// ═════════════════════════════════════════════════════════════════
 //  INIT
 // ═════════════════════════════════════════════════════════════════
 window.addEventListener('load', async () => {
@@ -875,7 +822,7 @@ window.addEventListener('load', async () => {
 });
 window.addEventListener('beforeunload', () => {
   if (currentUser) { try{ navigator.sendBeacon && navigator.sendBeacon(GAS_URL+'?action=logEvent&email='+encodeURIComponent(currentUser.email)+'&eventType=Logout&details=Tab%20closed'); }catch(e){} }
-  stopHeartbeat(); stopPresencePoll(); stopTop5Poll();
+  stopHeartbeat(); stopPresencePoll();
 });
 function hideSplash(){ const s=document.getElementById('s-loading'); s.style.transition='opacity .6s'; s.style.opacity='0'; setTimeout(()=>s.classList.remove('active'),650); }
 function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); clearMsgs(); }
@@ -883,7 +830,6 @@ function clearMsgs(){ document.querySelectorAll('.msg-box').forEach(el=>el.style
 function showErr(id,msg){ const el=document.getElementById(id); el.textContent=msg; el.style.display='block'; }
 function showOk(id,msg){ const el=document.getElementById(id); el.textContent=msg; el.style.display='block'; }
 function toast(msg, ms=3500){
-  if (currentUser && userSettings.notifications===false) { /* still show critical, skip informational */ }
   const t=document.getElementById('toast'); t.textContent='⬡ '+msg; t.style.opacity='1'; setTimeout(()=>t.style.opacity='0', ms);
 }
 
@@ -1029,9 +975,7 @@ function setBtnLoading(id,on){ const btn=document.getElementById(id); if(!btn) r
 
 function doLogout() {
   logEvent('Logout', 'Signed out of REAC Hub');
-  stopHeartbeat(); stopPresencePoll(); stopTop5Poll();
-  document.getElementById('top5-widget').classList.remove('visible');
-  document.getElementById('top5-show-btn').classList.remove('visible');
+  stopHeartbeat(); stopPresencePoll();
   currentUser=null; _verifiedOtp=''; _signupPass=''; pendingEmail='';
   sessionStorage.removeItem('reac_user');
   show('s-login');
@@ -1058,18 +1002,15 @@ async function loadDashboard() {
   const role = currentUser.role;
   currentPage = 'dash';
   buildSidebar();
+  renderRightSidebar();
   setupUserChip();
   show('s-app');
   startHeartbeat(currentUser);
   renderCurrentPage();
 
-  if (role==='admin' || role==='teamlead') {
-    showTop5Widget(); startTop5Poll();
+  if (isFullAccessRole(role) || role==='teamlead') {
     startPresencePoll(role==='teamlead' ? currentUser.email : null);
     document.getElementById('app-sync-badge').innerHTML = '<div class="sync-dot" style="background:var(--purple)"></div>SYNCED';
-  } else {
-    document.getElementById('top5-widget').classList.remove('visible');
-    document.getElementById('top5-show-btn').classList.remove('visible');
   }
 }
 
@@ -1195,7 +1136,7 @@ function toggleMetric(canvasId, key, btn) {
 //  DASHBOARD PAGE
 // ═════════════════════════════════════════════════════════════════
 function renderDashboard(role) {
-  if (role==='admin') return renderAdminOverview();
+  if (isFullAccessRole(role)) return renderAdminOverview();
   if (role==='teamlead') return renderTlOverview();
   return renderAgentDash();
 }
@@ -1240,10 +1181,10 @@ function renderAgentDash() {
 }
 
 // ═════════════════════════════════════════════════════════════════
-//  PERFORMANCE PAGE (donut + score bands + rank/trend panel) — NEW
+//  PERFORMANCE PAGE (donut + score bands + rank/trend panel)
 // ═════════════════════════════════════════════════════════════════
 function renderPerformancePage(role) {
-  if (role==='admin') return renderPerformanceManager(null,'var(--purple)','All Teams');
+  if (isFullAccessRole(role)) return renderPerformanceManager(null,'var(--purple)','All Teams');
   if (role==='teamlead') return renderPerformanceManager(currentUser.email,'#378ADD','My Team');
   return renderPerformanceAgent();
 }
@@ -1297,14 +1238,12 @@ function renderPerformanceManager(tlFilter, accent, scopeLabel) {
   const active = team.filter(a=>{const m=a.months?.[latestIdx]; return latestIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
   const avgOv = avgField(active, latestIdx, 'overall'), avgTps=avgField(active,latestIdx,'tps'), avgAtt=avgField(active,latestIdx,'attendance'), avgQa=avgField(active,latestIdx,'qa');
 
-  // previous month avg for trend
   const prevIdx = latestIdx>0?latestIdx-1:-1;
   const prevActive = prevIdx>=0 ? team.filter(a=>{const m=a.months?.[prevIdx]; return m&&m.count&&m.overall!=='Attrite';}) : [];
   const prevAvgOv = prevIdx>=0 ? avgField(prevActive, prevIdx, 'overall') : null;
   const delta = (avgOv!==null&&prevAvgOv!==null) ? (avgOv-prevAvgOv) : null;
   const trendVals = (allAgents[0]?.months||[]).map((m,i)=>{ const act=team.filter(a=>{const mm=a.months?.[i]; return mm&&mm.count&&mm.overall!=='Attrite';}); return act.length?avgField(act,i,'overall'):null; }).filter(v=>v!==null);
 
-  // score-band distribution donut (count of active agents per band)
   const bands = { Excellent:0, Good:0, Fair:0, 'Needs Improvement':0 };
   active.forEach(a=>{ const n=pct(a.months[latestIdx]?.overall); const info=bandInfo(n); bands[info.label]=(bands[info.label]||0)+1; });
   const donutId='donut-mgr-bands', sparkId='spark-mgr';
@@ -1404,7 +1343,7 @@ function renderTlTable(team, monthIdx) {
 //  LEADERBOARD
 // ═════════════════════════════════════════════════════════════════
 function renderLeaderboardPage(role) {
-  if (role==='admin') return renderLeaderboard([], 'var(--purple)', true);
+  if (isFullAccessRole(role)) return renderLeaderboard([], 'var(--purple)', true);
   const myTeamEmails = allAgents.filter(a=>a.teamLeadEmail===currentUser.email).map(a=>a.email);
   renderLeaderboard(myTeamEmails, '#378ADD', false);
 }
@@ -1434,7 +1373,7 @@ function renderLeaderboard(highlightEmails, accent, isAdmin) {
 }
 
 // ═════════════════════════════════════════════════════════════════
-//  ADMIN: OVERVIEW / ALL AGENTS / ACTIVITY LOG
+//  ADMIN / MASTER ADMIN: OVERVIEW / ALL AGENTS / ACTIVITY LOG
 // ═════════════════════════════════════════════════════════════════
 function renderAdminOverview() {
   const ca = document.getElementById('app-content-area');
@@ -1513,10 +1452,10 @@ function filterAdminTable(){ renderAdminAgentsTable(adminMonthIdx); }
 
 async function renderActivityLog() {
   const ca = document.getElementById('app-content-area');
-  ca.innerHTML = `<div class="page-section"><div class="page-header"><div class="page-tag" style="color:var(--purple);border-color:rgba(167,139,250,.3)">// SYSTEM ACTIVITY</div><h1>Activity Log</h1><p>Logins, logouts, password resets, tab visits, and quick-link opens.</p></div>
+  ca.innerHTML = `<div class="page-section"><div class="page-header"><div class="page-tag" style="color:var(--purple);border-color:rgba(167,139,250,.3)">// SYSTEM ACTIVITY</div><h1>Activity Log</h1><p>Logins, logouts, password resets, tab visits, and quick-link opens for all users.</p></div>
     <div class="panel"><div class="panel-title" style="color:var(--purple)">Recent Events</div><div id="activity-log-body" style="overflow-x:auto"><div class="no-data"><div class="nd-icon">⏳</div>Loading…</div></div></div></div>`;
   try {
-    const res = await gasGet('getActivity', { limit: 150 });
+    const res = await gasGet('getActivity', { limit: 150, requesterEmail: currentUser.email, requesterRole: currentUser.role });
     const rows = res.rows||[];
     const body = document.getElementById('activity-log-body');
     if (!rows.length) { body.innerHTML='<div class="no-data"><div class="nd-icon">📭</div>No activity recorded yet.</div>'; return; }
@@ -1586,7 +1525,7 @@ function renderSettingsPage() {
 
     <div class="panel" style="margin-bottom:1.5rem">
       <div class="panel-title">Notifications</div>
-      <div class="settings-row"><div><div class="settings-row-label">Enable notifications</div><div class="settings-row-sub">Toast alerts for leaderboard changes and system events</div></div>
+      <div class="settings-row"><div><div class="settings-row-label">Enable notifications</div><div class="settings-row-sub">Toast alerts for system events</div></div>
         <label class="toggle-switch"><input type="checkbox" id="set-notif-toggle" ${userSettings.notifications?'checked':''} onchange="onSettingsChange()"/><span class="toggle-slider"></span></label></div>
       <div class="settings-row"><div><div class="settings-row-label">Notification tone</div><div class="settings-row-sub">Sound played when a notification appears</div></div>
         <select class="select-ctrl" id="set-notif-tone" onchange="onSettingsChange()">
@@ -1686,10 +1625,10 @@ function renderHelpPage() {
       <div style="display:flex;flex-direction:column;gap:14px">
         <div><div style="font-weight:600;font-size:13px;margin-bottom:4px">My scores look outdated — what do I do?</div><div style="font-size:12px;color:var(--text2)">Scores are pulled directly from the monthly sheet your admin updates. If a period looks missing, check with your Team Lead.</div></div>
         <div><div style="font-weight:600;font-size:13px;margin-bottom:4px">How do I change my password?</div><div style="font-size:12px;color:var(--text2)">Log out, then choose "Forgot password?" on the login screen to reset via a one-time code sent to your email.</div></div>
-        <div><div style="font-weight:600;font-size:13px;margin-bottom:4px">Can I use the portal on mobile?</div><div style="font-size:12px;color:var(--text2)">Yes — the layout adapts to smaller screens; use the arrow tab on the left edge to collapse the sidebar.</div></div>
+        <div><div style="font-weight:600;font-size:13px;margin-bottom:4px">Can I use the portal on mobile?</div><div style="font-size:12px;color:var(--text2)">Yes — the layout adapts to smaller screens; use the arrow tabs on the left/right edges to collapse the sidebars.</div></div>
       </div></div>
     <div class="panel"><div class="panel-title">Need more help?</div>
-      <p style="font-size:12px;color:var(--text2)">Reach out to <strong style="color:var(--text)">support@reacrevenuesolutions.com</strong>, or use the "Help Center" quick link in the sidebar if your admin has configured one.</p></div>
+      <p style="font-size:12px;color:var(--text2)">Reach out to <strong style="color:var(--text)">support@reacrevenuesolutions.com</strong>, or use a "Quick Links" entry in the right sidebar if your admin has configured one.</p></div>
   </div>`;
 }
 
