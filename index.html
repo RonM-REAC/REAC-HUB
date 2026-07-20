@@ -87,9 +87,9 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .load-logo { font-family:var(--font-head); font-size:24px; font-weight:900; color:var(--neon); letter-spacing:.2em; text-shadow:0 0 30px rgba(0,255,231,.5); animation:load-pulse 1.6s ease-in-out infinite; }
 .load-sub { font-family:var(--font-mono); font-size:11px; color:var(--text2); letter-spacing:.3em; text-transform:uppercase; margin-top:-16px; }
 @keyframes load-pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
-.load-bar-wrap { width:220px; height:2px; background:rgba(0,255,231,.1); border-radius:2px; overflow:hidden; }
-.load-bar { height:100%; background:var(--neon); border-radius:2px; width:0%; box-shadow:0 0 10px var(--neon); animation:load-fill 1.8s ease forwards; }
-@keyframes load-fill { to{width:100%} }
+.load-bar-wrap { width:220px; height:2px; background:rgba(0,255,231,.1); border-radius:2px; overflow:hidden; position:relative; }
+.load-bar { position:absolute; top:0; left:-35%; height:100%; width:35%; background:var(--neon); border-radius:2px; box-shadow:0 0 10px var(--neon); animation:load-slide .9s ease-in-out infinite; }
+@keyframes load-slide { 0%{left:-35%} 100%{left:100%} }
 .load-spinner { width:36px; height:36px; border:2px solid rgba(0,255,231,.15); border-top-color:var(--neon); border-radius:50%; animation:spin .7s linear infinite; }
 @keyframes spin { to{transform:rotate(360deg)} }
 
@@ -163,15 +163,19 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .sidebar-logout { background:none; border:none; cursor:pointer; color:var(--text3); padding:4px; flex-shrink:0; }
 .sidebar-logout:hover { color:var(--danger); }
 .sidebar-logout svg { width:14px; height:14px; stroke:currentColor; }
-.sidebar-toggle-btn { position:absolute; top:50%; right:-14px; transform:translateY(-50%); z-index:100; width:28px; height:28px; background:var(--sidebar-bg); border:1px solid var(--sidebar-border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text2); }
-.sidebar-open-btn { position:fixed; top:50%; left:0; transform:translateY(-50%); z-index:200; width:24px; height:48px; background:var(--sidebar-bg); border:1px solid var(--sidebar-border); border-left:none; border-radius:0 8px 8px 0; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text2); opacity:0; pointer-events:none; }
+.sidebar-toggle-btn { position:absolute; top:50%; right:-17px; transform:translateY(-50%); z-index:100; width:34px; height:34px; background:var(--sidebar-bg); border:1.5px solid var(--neon); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--neon); box-shadow:0 4px 16px rgba(0,0,0,.35),0 0 14px rgba(0,255,231,.18); transition:.2s; }
+.sidebar-toggle-btn:hover { background:rgba(0,255,231,.12); transform:translateY(-50%) scale(1.06); }
+.sidebar-toggle-btn svg { width:18px; height:18px; }
+.sidebar-open-btn { position:fixed; top:50%; left:0; transform:translateY(-50%); z-index:200; width:30px; height:58px; background:var(--sidebar-bg); border:1.5px solid var(--neon); border-left:none; border-radius:0 10px 10px 0; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--neon); opacity:0; pointer-events:none; box-shadow:0 4px 16px rgba(0,0,0,.35); transition:.2s; }
+.sidebar-open-btn:hover { background:rgba(0,255,231,.12); }
+.sidebar-open-btn svg { width:18px; height:18px; }
 .sidebar-open-btn.visible { opacity:1; pointer-events:all; }
 
 .main-content { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
 .topbar { height:56px; flex-shrink:0; background:var(--topbar-bg); border-bottom:1px solid var(--sidebar-border); padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; }
 .topbar-title { font-family:var(--font-head); font-size:13px; color:var(--text); letter-spacing:.14em; text-transform:uppercase; }
 .topbar-right { display:flex; align-items:center; gap:1.1rem; }
-.clock { font-family:var(--font-mono); font-size:12px; color:var(--text2); }
+.clock { font-family:var(--font-mono); font-size:12px; color:var(--text2); white-space:nowrap; }
 .sync-badge { font-size:10px; font-family:var(--font-mono); display:flex; align-items:center; gap:6px; }
 .sync-dot { width:6px; height:6px; border-radius:50%; animation:blink 2s infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
@@ -333,23 +337,25 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .online-empty { font-size:12px; color:var(--text3); font-family:var(--font-mono); }
 .online-last-refresh { font-family:var(--font-mono); font-size:9px; color:var(--text3); }
 
-/* ── RIGHT SIDEBAR (Quick Links / Place Holder) ───────────────── */
-.sidebar-right { width:230px; height:100%; flex-shrink:0; background:var(--sidebar-bg); border-left:1px solid var(--sidebar-border); display:flex; flex-direction:column; position:relative; overflow:hidden; box-shadow:-4px 0 30px rgba(0,0,0,.35); transition:width .3s cubic-bezier(.4,0,.2,1),min-width .3s cubic-bezier(.4,0,.2,1); min-width:230px; }
-.sidebar-right.collapsed { width:0 !important; min-width:0 !important; }
-.sidebar-right-header { padding:1.1rem 1.1rem .9rem; border-bottom:1px solid var(--sidebar-border); flex-shrink:0; }
-.sidebar-right-header h2 { font-family:var(--font-head); font-size:10px; font-weight:700; color:var(--neon); letter-spacing:.16em; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
-.sidebar-right-header p { font-size:10px; color:var(--text3); margin-top:4px; }
-.sidebar-right-body { flex:1; overflow-y:auto; padding:.9rem .9rem; white-space:nowrap; }
-.sidebar-right-body::-webkit-scrollbar { width:0; }
-.right-link-item { display:flex; align-items:center; gap:10px; padding:11px 12px; margin-bottom:8px; border-radius:var(--card-radius); cursor:pointer; background:var(--panel); border:1px solid var(--border2); color:var(--text); font-size:12.5px; transition:.15s; }
-.right-link-item:hover { border-color:var(--neon); color:var(--neon); transform:translateX(-2px); }
-.right-link-icon { width:26px; height:26px; border-radius:7px; background:rgba(0,255,231,.08); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:13px; }
-.right-link-label { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.right-link-ext { opacity:.45; font-size:10px; flex-shrink:0; }
-.sidebar-right-empty { text-align:center; padding:30px 10px; color:var(--text3); font-size:11px; font-family:var(--font-mono); }
-.sidebar-right-toggle-btn { position:absolute; top:50%; left:-14px; transform:translateY(-50%); z-index:100; width:28px; height:28px; background:var(--sidebar-bg); border:1px solid var(--sidebar-border); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text2); }
-.sidebar-right-open-btn { position:fixed; top:50%; right:0; transform:translateY(-50%); z-index:200; width:24px; height:48px; background:var(--sidebar-bg); border:1px solid var(--sidebar-border); border-right:none; border-radius:8px 0 0 8px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text2); opacity:0; pointer-events:none; }
-.sidebar-right-open-btn.visible { opacity:1; pointer-events:all; }
+/* ── TOPBAR QUICK LINKS DROPDOWN ──────────────────────────────── */
+.quicklinks-dropdown { position:relative; }
+.quicklinks-btn { display:flex; align-items:center; gap:6px; height:32px; padding:0 12px; background:var(--bg3); border:1px solid var(--border2); border-radius:20px; color:var(--text2); font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; cursor:pointer; transition:.2s; white-space:nowrap; }
+.quicklinks-btn:hover { border-color:var(--neon); color:var(--neon); }
+.quicklinks-btn svg { width:12px; height:12px; }
+.quicklinks-menu { position:absolute; top:calc(100% + 8px); right:0; width:250px; max-height:340px; overflow-y:auto; background:var(--sidebar-bg); border:1px solid var(--sidebar-border); border-radius:var(--card-radius); box-shadow:0 12px 40px rgba(0,0,0,.4); padding:8px; display:none; z-index:150; }
+.quicklinks-menu.open { display:block; }
+.ql-item { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; cursor:pointer; color:var(--text); font-size:12.5px; transition:.15s; }
+.ql-item:hover { background:rgba(0,255,231,.08); color:var(--neon); }
+.ql-item-icon { width:24px; height:24px; border-radius:6px; background:rgba(0,255,231,.08); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:12px; }
+.ql-item-label { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ql-item-ext { opacity:.45; font-size:10px; flex-shrink:0; }
+.ql-empty { text-align:center; padding:20px 10px; color:var(--text3); font-size:11px; font-family:var(--font-mono); }
+
+/* ── TIMEZONE SWITCH ───────────────────────────────────────────── */
+.tz-switch { display:flex; align-items:center; gap:4px; background:var(--bg3); border:1px solid var(--border2); border-radius:20px; padding:3px; }
+.tz-btn { padding:5px 10px; border-radius:14px; border:none; cursor:pointer; font-size:9px; font-family:var(--font-mono); letter-spacing:.06em; transition:.2s; background:transparent; color:var(--text3); }
+.tz-btn.active { background:var(--neon); color:var(--bg); font-weight:700; }
+[data-theme="clean"] .tz-btn.active, [data-theme="flatdark"] .tz-btn.active { color:#101318; }
 </style>
 </head>
 <body>
@@ -497,9 +503,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
   <div class="sidebar-open-btn" id="app-open-btn" onclick="toggleSidebar()">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
   </div>
-  <div class="sidebar-right-open-btn" id="app-right-open-btn" onclick="toggleRightSidebar()">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-  </div>
   <div class="app-layout">
     <div class="sidebar" id="app-sidebar">
       <div class="sidebar-toggle-btn" onclick="toggleSidebar()">
@@ -523,10 +526,16 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
       <div class="topbar">
         <div class="topbar-title" id="app-topbar-title">Dashboard</div>
         <div class="topbar-right">
-          <div class="theme-switcher" id="theme-switcher">
-            <button class="theme-btn" id="theme-btn-futuristic" onclick="setTheme('futuristic')">⬡ NEON</button>
-            <button class="theme-btn" id="theme-btn-clean" onclick="setTheme('clean')">☀ LIGHT</button>
-            <button class="theme-btn" id="theme-btn-flatdark" onclick="setTheme('flatdark')">◐ DARK</button>
+          <div class="quicklinks-dropdown" id="quicklinks-dropdown">
+            <button class="quicklinks-btn" onclick="toggleQuickLinksMenu(event)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              QUICK LINKS
+            </button>
+            <div class="quicklinks-menu" id="quicklinks-menu"><!-- built dynamically --></div>
+          </div>
+          <div class="tz-switch" id="tz-switch">
+            <button class="tz-btn active" id="tz-btn-ph" onclick="setClockTz('ph')">PH</button>
+            <button class="tz-btn" id="tz-btn-et" onclick="setClockTz('et')">ET</button>
           </div>
           <div class="sync-badge" id="app-sync-badge" style="color:var(--neon)"><div class="sync-dot" style="background:var(--neon)"></div>LIVE</div>
           <div class="clock" id="clock-app">--:--:--</div>
@@ -535,16 +544,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
       <div class="content-area" id="app-content-area">
         <div class="no-data"><div class="nd-icon">⚡</div>Loading your data...</div>
       </div>
-    </div>
-    <div class="sidebar-right" id="app-sidebar-right">
-      <div class="sidebar-right-toggle-btn" onclick="toggleRightSidebar()">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-      <div class="sidebar-right-header">
-        <h2>⬡ Quick Links</h2>
-        <p>Shortcuts configured by your admin</p>
-      </div>
-      <div class="sidebar-right-body" id="sidebar-right-body"><!-- built dynamically --></div>
     </div>
   </div>
 </div>
@@ -571,7 +570,7 @@ let placeholderLinks = [];
 let userSettings     = { theme:'futuristic', notifications:true, notificationTone:'chime', clickTone:'soft', hasProfilePic:false };
 let profilePicCache   = {}; // email -> base64 data URL
 let pendingEmail = '', otpMode = 'forgot', _signupPass = '', _verifiedOtp = '';
-let adminMonthIdx = 0, tlMonthIdx = 0, adminBreakdownMonthIdx = 0;
+let adminMonthIdx = 0, tlMonthIdx = 0, adminBreakdownMonthIdx = 0, adminOverviewMonthIdx = -1, tlOverviewMonthIdx = -1;
 let currentTheme = 'futuristic';
 let chartInstances = {};
 let currentPage = 'dash';
@@ -632,11 +631,11 @@ function playNotifTone() {
   else { playTone(660,.12,'sine'); setTimeout(()=>playTone(880,.18,'sine'),110); }
 }
 document.addEventListener('click', (e)=>{
-  if (e.target.closest('.nav-item, .btn-primary, .theme-btn, .month-tab, .metric-toggle-btn')) playClickTone();
+  if (e.target.closest('.nav-item, .btn-primary, .theme-btn, .month-tab, .metric-toggle-btn, .tz-btn, .ql-item, .quicklinks-btn')) playClickTone();
 }, true);
 
 // ═════════════════════════════════════════════════════════════════
-//  SIDEBAR (left = nav, right = quick links)
+//  SIDEBAR (left = nav)
 // ═════════════════════════════════════════════════════════════════
 let sidebarOpen = true;
 function toggleSidebar() {
@@ -644,13 +643,6 @@ function toggleSidebar() {
   sidebarOpen = !sidebarOpen;
   sb.classList.toggle('collapsed', !sidebarOpen);
   ob.classList.toggle('visible', !sidebarOpen);
-}
-let rightSidebarOpen = true;
-function toggleRightSidebar() {
-  const sb=document.getElementById('app-sidebar-right'), ob=document.getElementById('app-right-open-btn');
-  rightSidebarOpen = !rightSidebarOpen;
-  sb.classList.toggle('collapsed', !rightSidebarOpen);
-  ob.classList.toggle('visible', !rightSidebarOpen);
 }
 
 const ICONS = {
@@ -680,8 +672,7 @@ function coreNavForRole(role) {
     {key:'dash',label:'Team Overview',icon:'dash'},
     {key:'performance',label:'Performance',icon:'perf'},
     {key:'scores',label:'Team Scores',icon:'scores'},
-    {key:'lb',label:'Leaderboard',icon:'lb'},
-    {key:'activity',label:'Team Activity',icon:'activity'}
+    {key:'lb',label:'Leaderboard',icon:'lb'}
   ];
   return [ // agent + senior poc
     {key:'dash',label:'Dashboard',icon:'dash'},
@@ -713,20 +704,40 @@ function buildSidebar() {
 }
 function escAttr(s){ return String(s||'').replace(/'/g,"\\'"); }
 
-function buildRightSidebar() {
-  const body = document.getElementById('sidebar-right-body');
-  if (!body) return;
-  if (!placeholderLinks.length) { body.innerHTML = `<div class="sidebar-right-empty">No quick links configured yet.<br/>Ask your admin to add some in the Place Holder sheet.</div>`; return; }
-  body.innerHTML = placeholderLinks.map(p=>`
-    <div class="right-link-item" onclick="openPlaceholder('${escAttr(p.label)}','${escAttr(p.url)}')">
-      <span class="right-link-icon">${p.icon||'🔗'}</span>
-      <span class="right-link-label">${p.label}</span>
-      <span class="right-link-ext">↗</span>
+// ═════════════════════════════════════════════════════════════════
+//  QUICK LINKS DROPDOWN (topbar)
+// ═════════════════════════════════════════════════════════════════
+let qlMenuOpen = false;
+function toggleQuickLinksMenu(e) {
+  e && e.stopPropagation();
+  qlMenuOpen = !qlMenuOpen;
+  const m = document.getElementById('quicklinks-menu');
+  if (m) m.classList.toggle('open', qlMenuOpen);
+}
+document.addEventListener('click', (e)=>{
+  const dd = document.getElementById('quicklinks-dropdown');
+  if (dd && qlMenuOpen && !dd.contains(e.target)) {
+    qlMenuOpen = false;
+    const m = document.getElementById('quicklinks-menu');
+    if (m) m.classList.remove('open');
+  }
+});
+function buildQuickLinksMenu() {
+  const menu = document.getElementById('quicklinks-menu');
+  if (!menu) return;
+  if (!placeholderLinks.length) { menu.innerHTML = `<div class="ql-empty">No quick links configured yet.<br/>Ask your admin to add some in the Place Holder sheet.</div>`; return; }
+  menu.innerHTML = placeholderLinks.map(p=>`
+    <div class="ql-item" onclick="openPlaceholder('${escAttr(p.label)}','${escAttr(p.url)}')">
+      <span class="ql-item-icon">${p.icon||'🔗'}</span>
+      <span class="ql-item-label">${p.label}</span>
+      <span class="ql-item-ext">↗</span>
     </div>`).join('');
 }
 
 function openPlaceholder(label, url) {
   logEvent('Link Open', 'Opened quick link: ' + label);
+  qlMenuOpen = false;
+  const m = document.getElementById('quicklinks-menu'); if (m) m.classList.remove('open');
   if (url) window.open(url, '_blank', 'noopener');
   else toast('No URL configured for "'+label+'" yet — ask your admin to add it in the Place Holder sheet.');
 }
@@ -816,7 +827,7 @@ window.addEventListener('beforeunload', () => {
   if (currentUser) { try{ navigator.sendBeacon && navigator.sendBeacon(GAS_URL+'?action=logEvent&email='+encodeURIComponent(currentUser.email)+'&eventType=Logout&details=Tab%20closed'); }catch(e){} }
   stopHeartbeat(); stopPresencePoll();
 });
-function hideSplash(){ const s=document.getElementById('s-loading'); s.style.transition='opacity .6s'; s.style.opacity='0'; setTimeout(()=>s.classList.remove('active'),650); }
+function hideSplash(){ const s=document.getElementById('s-loading'); s.style.transition='opacity .3s'; s.style.opacity='0'; setTimeout(()=>s.classList.remove('active'),320); }
 function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); clearMsgs(); }
 function clearMsgs(){ document.querySelectorAll('.msg-box').forEach(el=>el.style.display='none'); }
 function showErr(id,msg){ const el=document.getElementById(id); el.textContent=msg; el.style.display='block'; }
@@ -975,26 +986,28 @@ function doLogout() {
 
 // ── DASHBOARD LOADER ─────────────────────────────────────────────
 async function loadDashboard() {
-  try {
-    const res = await gasGet('getData');
-    allAgents = res.agents||[]; mgmtUsers = res.management||[];
-  } catch(e) { allAgents=[]; mgmtUsers=[]; console.warn('getData failed:', e.message); }
-  try { const ph = await gasGet('getPlaceholders'); placeholderLinks = ph.items||[]; } catch(e) { placeholderLinks=[]; }
-  try {
-    const st = await gasGet('getSettings', { email: currentUser.email });
-    if (st.success) userSettings = st.settings;
-  } catch(e) {}
-  try {
-    const pic = await gasGet('getProfilePic', { email: currentUser.email });
-    if (pic.success && pic.image) profilePicCache[currentUser.email] = pic.image;
-  } catch(e) {}
+  const [dataRes, phRes, stRes, picRes] = await Promise.allSettled([
+    gasGet('getData'),
+    gasGet('getPlaceholders'),
+    gasGet('getSettings', { email: currentUser.email }),
+    gasGet('getProfilePic', { email: currentUser.email })
+  ]);
+
+  if (dataRes.status==='fulfilled') { allAgents = dataRes.value.agents||[]; mgmtUsers = dataRes.value.management||[]; }
+  else { allAgents=[]; mgmtUsers=[]; console.warn('getData failed:', dataRes.reason && dataRes.reason.message); }
+
+  placeholderLinks = (phRes.status==='fulfilled' ? (phRes.value.items||[]) : []);
+
+  if (stRes.status==='fulfilled' && stRes.value.success) userSettings = stRes.value.settings;
+
+  if (picRes.status==='fulfilled' && picRes.value.success && picRes.value.image) profilePicCache[currentUser.email] = picRes.value.image;
 
   setTheme(userSettings.theme||'futuristic', true);
   hideSplash();
   const role = currentUser.role;
   currentPage = 'dash';
   buildSidebar();
-  buildRightSidebar();
+  buildQuickLinksMenu();
   setupUserChip();
   show('s-app');
   startHeartbeat(currentUser);
@@ -1226,7 +1239,7 @@ function renderPerformanceManager(tlFilter, accent, scopeLabel) {
   const ca = document.getElementById('app-content-area');
   const team = tlFilter ? allAgents.filter(a=>a.teamLeadEmail===tlFilter) : allAgents;
   const latestIdx = latestActiveIdxAcrossAgents(team);
-  const latestLabel = latestIdx>=0 ? (team.find(a=>a.months?.[latestIdx])?.months[latestIdx]?.label||'') : '—';
+  const latestLabel = latestIdx>=0 ? (team.find(a=>a.months?.[latestIdx])?.months[latestIdx]?.label||'') : '';
   const active = team.filter(a=>{const m=a.months?.[latestIdx]; return latestIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
   const avgOv = avgField(active, latestIdx, 'overall'), avgTps=avgField(active,latestIdx,'tps'), avgAtt=avgField(active,latestIdx,'attendance'), avgQa=avgField(active,latestIdx,'qa');
 
@@ -1369,36 +1382,44 @@ function renderLeaderboard(highlightEmails, accent, isAdmin) {
 // ═════════════════════════════════════════════════════════════════
 function renderAdminOverview() {
   const ca = document.getElementById('app-content-area');
-  const latestIdx = latestActiveIdxAcrossAgents(allAgents);
-  const latestLabel = latestIdx>=0 ? (allAgents.find(a=>a.months?.[latestIdx])?.months[latestIdx]?.label||'') : '—';
-  const active = allAgents.filter(a=>{const m=a.months?.[latestIdx]; return latestIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
-  const avgOv=avgField(active,latestIdx,'overall'), avgTps=avgField(active,latestIdx,'tps'), avgQa=avgField(active,latestIdx,'qa'), avgAtt=avgField(active,latestIdx,'attendance');
-  const leads = mgmtUsers.filter(u=>u.role==='teamlead');
   const allMonths = allAgents[0]?.months||[];
+  const latestIdx = latestActiveIdxAcrossAgents(allAgents);
+  if (adminOverviewMonthIdx === -1) adminOverviewMonthIdx = latestIdx;
+  const selIdx = adminOverviewMonthIdx;
+  const selLabel = allMonths[selIdx]?.label || '—';
+  const active = allAgents.filter(a=>{const m=a.months?.[selIdx]; return selIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
+  const avgOv=avgField(active,selIdx,'overall'), avgTps=avgField(active,selIdx,'tps'), avgQa=avgField(active,selIdx,'qa'), avgAtt=avgField(active,selIdx,'attendance');
+  const leads = mgmtUsers.filter(u=>u.role==='teamlead');
   if (adminBreakdownMonthIdx===0 && latestIdx>0) adminBreakdownMonthIdx=latestIdx;
 
   ca.innerHTML = `<div class="page-section">
-    <div class="page-header"><div class="page-tag" style="color:var(--purple);border-color:rgba(167,139,250,.3)">// ${latestLabel.toUpperCase()} · ALL TEAMS</div><h1>Team Overview</h1>
-      <p>Aggregate performance metrics across all agents for <strong style="color:var(--purple)">${latestLabel}</strong>.</p></div>
+    <div class="page-header">
+      <div class="page-tag" style="color:var(--purple);border-color:rgba(167,139,250,.3)">// ${selLabel.toUpperCase()} · ALL TEAMS</div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div><h1>Team Overview</h1><p>Aggregate performance metrics across all agents for <strong style="color:var(--purple)">${selLabel}</strong>.</p></div>
+        <select class="select-ctrl" id="admin-overview-month-sel" onchange="adminOverviewMonthSwitch(this.value)">${allMonths.map((m,i)=>`<option value="${i}"${i===selIdx?' selected':''}>${m.label}</option>`).join('')}</select>
+      </div>
+    </div>
     ${buildOnlinePanelHTML('var(--purple)')}
     <div class="metrics-grid-5">
-      <div class="metric-card" style="--card-color:var(--purple)"><div class="metric-label">Total Agents</div><div class="metric-value">${allAgents.length}</div><div class="metric-sub">${active.length} active · ${latestLabel}</div></div>
-      <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Avg TPS</div><div class="metric-value">${avgTps?avgTps.toFixed(1)+'%':'—'}</div><div class="metric-sub">${latestLabel}</div></div>
-      <div class="metric-card" style="--card-color:var(--neon2)"><div class="metric-label">Avg Attendance</div><div class="metric-value">${avgAtt?avgAtt.toFixed(1)+'%':'—'}</div><div class="metric-sub">${latestLabel}</div></div>
-      <div class="metric-card" style="--card-color:var(--warn)"><div class="metric-label">Avg QA Score</div><div class="metric-value">${avgQa?avgQa.toFixed(1)+'%':'—'}</div><div class="metric-sub">${latestLabel}</div></div>
-      <div class="metric-card" style="--card-color:var(--neon)"><div class="metric-label">Avg Overall</div><div class="metric-value">${avgOv?avgOv.toFixed(1)+'%':'—'}</div><div class="metric-sub">${latestLabel}</div></div>
+      <div class="metric-card" style="--card-color:var(--purple)"><div class="metric-label">Total Agents</div><div class="metric-value">${allAgents.length}</div><div class="metric-sub">${active.length} active · ${selLabel}</div></div>
+      <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Avg TPS</div><div class="metric-value">${avgTps?avgTps.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
+      <div class="metric-card" style="--card-color:var(--neon2)"><div class="metric-label">Avg Attendance</div><div class="metric-value">${avgAtt?avgAtt.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
+      <div class="metric-card" style="--card-color:var(--warn)"><div class="metric-label">Avg QA Score</div><div class="metric-value">${avgQa?avgQa.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
+      <div class="metric-card" style="--card-color:var(--neon)"><div class="metric-label">Avg Overall</div><div class="metric-value">${avgOv?avgOv.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
     </div>
     ${leads.length?`<div class="panel" style="margin-bottom:1.5rem"><div class="panel-title-row"><div class="panel-title" style="color:var(--purple)">Team Breakdown</div>
       <select class="select-ctrl" id="admin-breakdown-month-sel" onchange="adminBreakdownSwitch(this.value)">${allMonths.map((m,i)=>`<option value="${i}"${i===adminBreakdownMonthIdx?' selected':''}>${m.label}</option>`).join('')}</select></div>
       <div id="admin-team-breakdown-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem">${buildTeamBreakdownCards(leads,adminBreakdownMonthIdx)}</div></div>`:''}
-    <div class="panel"><div class="panel-title" style="color:var(--purple)">Score Rankings — ${latestLabel}</div><div style="overflow-x:auto"><table class="data-table">
+    <div class="panel"><div class="panel-title" style="color:var(--purple)">Score Rankings — ${selLabel}</div><div style="overflow-x:auto"><table class="data-table">
       <thead><tr><th>Rank</th><th>Agent</th><th>Team Lead</th><th>TPS</th><th>Attendance</th><th>QA</th><th>Overall</th></tr></thead><tbody>
-        ${[...active].sort((a,b)=>(parseInt(a.months[latestIdx]?.rank)||9999)-(parseInt(b.months[latestIdx]?.rank)||9999)).map(a=>{ const m=a.months[latestIdx]; const tl=mgmtUsers.find(u=>u.email===a.teamLeadEmail);
+        ${[...active].sort((a,b)=>(parseInt(a.months[selIdx]?.rank)||9999)-(parseInt(b.months[selIdx]?.rank)||9999)).map(a=>{ const m=a.months[selIdx]; const tl=mgmtUsers.find(u=>u.email===a.teamLeadEmail);
           return `<tr><td>${rankBadgeHTML(m.rank)}</td><td><div class="agent-cell">${avatarHTML(a,28)}<span class="agent-cell-name">${a.name}</span></div></td><td><span class="team-chip">${tl?tl.name:'—'}</span></td>
             <td>${fmtPct(m.tps)}</td><td>${fmtPct(m.attendance)}</td><td>${fmtPct(m.qa)}</td><td>${scoreBarHTML(m.overall)}</td></tr>`; }).join('')}
       </tbody></table></div></div></div>`;
   startPresencePoll(null);
 }
+function adminOverviewMonthSwitch(idx) { adminOverviewMonthIdx = parseInt(idx); renderAdminOverview(); }
 function buildTeamBreakdownCards(leads, monthIdx) {
   return leads.map(tl=>{ const team=allAgents.filter(a=>a.teamLeadEmail===tl.email); const teamActive=team.filter(a=>{const m=a.months?.[monthIdx]; return m&&m.count&&m.overall!=='Attrite';});
     const avTps=avgField(teamActive,monthIdx,'tps'), avAtt=avgField(teamActive,monthIdx,'attendance'), avQa=avgField(teamActive,monthIdx,'qa'), avOv=avgField(teamActive,monthIdx,'overall');
@@ -1467,32 +1488,42 @@ async function renderActivityLog() {
 function renderTlOverview() {
   const ca = document.getElementById('app-content-area');
   const myTeam = allAgents.filter(a=>a.teamLeadEmail===currentUser.email);
+  const allMonths = myTeam[0]?.months || allAgents[0]?.months || [];
   const latestIdx = latestActiveIdxAcrossAgents(myTeam);
-  const latestLabel = latestIdx>=0 ? (myTeam.find(a=>a.months?.[latestIdx])?.months[latestIdx]?.label||'') : '—';
-  const active = myTeam.filter(a=>{const m=a.months?.[latestIdx]; return latestIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
-  const avgOv=avgField(active,latestIdx,'overall'), avgTps=avgField(active,latestIdx,'tps'), avgAtt=avgField(active,latestIdx,'attendance'), avgQa=avgField(active,latestIdx,'qa');
-  const sorted=[...active].sort((a,b)=>(parseInt(a.months[latestIdx]?.rank)||9999)-(parseInt(b.months[latestIdx]?.rank)||9999));
+  if (tlOverviewMonthIdx === -1) tlOverviewMonthIdx = latestIdx;
+  const selIdx = tlOverviewMonthIdx;
+  const selLabel = allMonths[selIdx]?.label || '—';
+  const active = myTeam.filter(a=>{const m=a.months?.[selIdx]; return selIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
+  const avgOv=avgField(active,selIdx,'overall'), avgTps=avgField(active,selIdx,'tps'), avgAtt=avgField(active,selIdx,'attendance'), avgQa=avgField(active,selIdx,'qa');
+  const sorted=[...active].sort((a,b)=>(parseInt(a.months[selIdx]?.rank)||9999)-(parseInt(b.months[selIdx]?.rank)||9999));
   const canvasId='chart-tl-trend';
   ca.innerHTML = `<div class="page-section">
-    <div class="page-header"><div class="page-tag" style="color:#378ADD;border-color:rgba(55,138,221,.3)">// ${latestLabel.toUpperCase()} · MY TEAM</div><h1>Team Overview</h1><p>Performance summary for your team — ${myTeam.length} agents, ${active.length} active this period.</p></div>
+    <div class="page-header">
+      <div class="page-tag" style="color:#378ADD;border-color:rgba(55,138,221,.3)">// ${selLabel.toUpperCase()} · MY TEAM</div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div><h1>Team Overview</h1><p>Performance summary for your team — ${myTeam.length} agents, ${active.length} active this period.</p></div>
+        <select class="select-ctrl" id="tl-overview-month-sel" onchange="tlOverviewMonthSwitch(this.value)">${allMonths.map((m,i)=>`<option value="${i}"${i===selIdx?' selected':''}>${m.label}</option>`).join('')}</select>
+      </div>
+    </div>
     ${buildOnlinePanelHTML('#378ADD')}
     <div class="metrics-grid-5">
-      <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Team Members</div><div class="metric-value">${myTeam.length}</div><div class="metric-sub">${active.length} active · ${latestLabel}</div></div>
-      <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Avg TPS</div><div class="metric-value">${avgTps?avgTps.toFixed(1)+'%':'—'}</div><div class="metric-sub">${latestLabel}</div></div>
-      <div class="metric-card" style="--card-color:var(--purple)"><div class="metric-label">Avg Attendance</div><div class="metric-value">${avgAtt?avgAtt.toFixed(1)+'%':'—'}</div><div class="metric-sub">${latestLabel}</div></div>
-      <div class="metric-card" style="--card-color:var(--warn)"><div class="metric-label">Avg QA Score</div><div class="metric-value">${avgQa?avgQa.toFixed(1)+'%':'—'}</div><div class="metric-sub">${latestLabel}</div></div>
-      <div class="metric-card" style="--card-color:var(--neon)"><div class="metric-label">Avg Overall</div><div class="metric-value">${avgOv?avgOv.toFixed(1)+'%':'—'}</div><div class="metric-sub">${latestLabel}</div></div>
+      <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Team Members</div><div class="metric-value">${myTeam.length}</div><div class="metric-sub">${active.length} active · ${selLabel}</div></div>
+      <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Avg TPS</div><div class="metric-value">${avgTps?avgTps.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
+      <div class="metric-card" style="--card-color:var(--purple)"><div class="metric-label">Avg Attendance</div><div class="metric-value">${avgAtt?avgAtt.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
+      <div class="metric-card" style="--card-color:var(--warn)"><div class="metric-label">Avg QA Score</div><div class="metric-value">${avgQa?avgQa.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
+      <div class="metric-card" style="--card-color:var(--neon)"><div class="metric-label">Avg Overall</div><div class="metric-value">${avgOv?avgOv.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
     </div>
     <div class="panel" style="margin-bottom:1.5rem"><div class="panel-title" style="color:#378ADD">Team Performance Trend</div>${metricTogglesHTML(canvasId)}<canvas id="${canvasId}" height="130"></canvas></div>
-    <div class="panel"><div class="panel-title" style="color:#378ADD">Team Rankings — ${latestLabel}</div><div style="overflow-x:auto"><table class="data-table">
+    <div class="panel"><div class="panel-title" style="color:#378ADD">Team Rankings — ${selLabel}</div><div style="overflow-x:auto"><table class="data-table">
       <thead><tr><th>Rank</th><th>Agent</th><th>TPS</th><th>Attendance</th><th>QA</th><th>Overall</th></tr></thead><tbody>
-        ${sorted.map(a=>{ const m=a.months[latestIdx]; return `<tr><td>${rankBadgeHTML(m.rank)}</td><td><div class="agent-cell">${avatarHTML(a,28)}<span class="agent-cell-name">${a.name}</span></div></td>
+        ${sorted.map(a=>{ const m=a.months[selIdx]; return `<tr><td>${rankBadgeHTML(m.rank)}</td><td><div class="agent-cell">${avatarHTML(a,28)}<span class="agent-cell-name">${a.name}</span></div></td>
           <td>${fmtPct(m.tps)}</td><td>${fmtPct(m.attendance)}</td><td>${fmtPct(m.qa)}</td><td>${scoreBarHTML(m.overall)}</td></tr>`; }).join('')}
-        ${myTeam.filter(a=>{const m=a.months?.[latestIdx]; return !m||!m.count||m.overall==='Attrite';}).map(a=>`<tr><td>—</td><td>${a.name}</td><td colspan="4"><span class="attrite-badge">${a.months?.[latestIdx]?.overall==='Attrite'?'Attrited':'No Data'}</span></td></tr>`).join('')}
+        ${myTeam.filter(a=>{const m=a.months?.[selIdx]; return !m||!m.count||m.overall==='Attrite';}).map(a=>`<tr><td>—</td><td>${a.name}</td><td colspan="4"><span class="attrite-badge">${a.months?.[selIdx]?.overall==='Attrite'?'Attrited':'No Data'}</span></td></tr>`).join('')}
       </tbody></table></div></div></div>`;
   startPresencePoll(currentUser.email);
   setTimeout(()=>buildLineChart(canvasId, myTeam), 60);
 }
+function tlOverviewMonthSwitch(idx) { tlOverviewMonthIdx = parseInt(idx); renderTlOverview(); }
 
 // ═════════════════════════════════════════════════════════════════
 //  SETTINGS PAGE
@@ -1620,18 +1651,30 @@ function renderHelpPage() {
       <div style="display:flex;flex-direction:column;gap:14px">
         <div><div style="font-weight:600;font-size:13px;margin-bottom:4px">My scores look outdated — what do I do?</div><div style="font-size:12px;color:var(--text2)">Scores are pulled directly from the monthly sheet your admin updates. If a period looks missing, check with your Team Lead.</div></div>
         <div><div style="font-weight:600;font-size:13px;margin-bottom:4px">How do I change my password?</div><div style="font-size:12px;color:var(--text2)">Log out, then choose "Forgot password?" on the login screen to reset via a one-time code sent to your email.</div></div>
-        <div><div style="font-weight:600;font-size:13px;margin-bottom:4px">Can I use the portal on mobile?</div><div style="font-size:12px;color:var(--text2)">Yes — the layout adapts to smaller screens; use the arrow tabs on either edge to collapse the sidebars.</div></div>
+        <div><div style="font-weight:600;font-size:13px;margin-bottom:4px">Can I use the portal on mobile?</div><div style="font-size:12px;color:var(--text2)">Yes — the layout adapts to smaller screens; use the arrow tab on the left edge to collapse the sidebar.</div></div>
       </div></div>
     <div class="panel"><div class="panel-title">Need more help?</div>
-      <p style="font-size:12px;color:var(--text2)">Reach out to <strong style="color:var(--text)">support@reacrevenuesolutions.com</strong>, or use a Quick Link on the right if your admin has configured a Help Center.</p></div>
+      <p style="font-size:12px;color:var(--text2)">Reach out to <strong style="color:var(--text)">support@reacrevenuesolutions.com</strong>, or use a Quick Link from the topbar dropdown if your admin has configured a Help Center.</p></div>
   </div>`;
 }
 
 // ── CLOCKS ───────────────────────────────────────────────────────
-function startClocks() {
-  function tick(){ const ts=new Date().toLocaleTimeString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'}); const el=document.getElementById('clock-app'); if(el) el.textContent=ts; }
-  tick(); setInterval(tick,1000);
+let clockTz = 'ph'; // 'ph' = Asia/Manila, 'et' = America/New_York
+function setClockTz(tz) {
+  clockTz = tz;
+  const phBtn=document.getElementById('tz-btn-ph'), etBtn=document.getElementById('tz-btn-et');
+  if (phBtn) phBtn.classList.toggle('active', tz==='ph');
+  if (etBtn) etBtn.classList.toggle('active', tz==='et');
+  tickClock();
 }
+function tickClock() {
+  const zone = clockTz==='et' ? 'America/New_York' : 'Asia/Manila';
+  let ts;
+  try { ts = new Intl.DateTimeFormat('en-US',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:zone}).format(new Date()); }
+  catch(e) { ts = new Date().toLocaleTimeString('en-US',{hour12:false}); }
+  const el=document.getElementById('clock-app'); if(el) el.textContent = ts + (clockTz==='et' ? ' ET' : ' PH');
+}
+function startClocks() { tickClock(); setInterval(tickClock,1000); }
 
 // ── PARTICLES (futuristic theme only) ─────────────────────────────
 function initParticles() {
