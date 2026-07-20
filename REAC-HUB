@@ -557,7 +557,7 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 // ═════════════════════════════════════════════════════════════════
 //  CONFIG
 // ═════════════════════════════════════════════════════════════════
-const GAS_URL = 'PASTE_YOUR_DEPLOYMENT_URL_HERE'; // e.g. https://script.google.com/macros/s/AKfycb.../exec
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyckP5x2FBbxQhPgSvXuGGkBQ9GkQrGgBpeCEygPqE48jI1PrsfJxaVYC61uti_AkB7/exec'; // e.g. https://script.google.com/macros/s/AKfycb.../exec
 
 const PRESENCE_KEY       = 'reac_presence';
 const HEARTBEAT_INTERVAL = 25000;
