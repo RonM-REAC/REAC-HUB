@@ -273,6 +273,8 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 
 /* ── DONUT CHART LEGEND ───────────────────────────────────────── */
 .donut-wrap { display:flex; align-items:center; gap:1.4rem; flex-wrap:wrap; justify-content:center; }
+.donut-canvas-box { position:relative; width:150px; height:150px; flex-shrink:0; }
+.donut-canvas-box canvas { position:absolute; inset:0; width:100% !important; height:100% !important; }
 .donut-legend { display:flex; flex-direction:column; gap:9px; }
 .donut-legend-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); }
 .donut-legend-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
@@ -323,19 +325,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .info-item { background:var(--panel); border:1px solid var(--border2); border-radius:var(--card-radius); padding:1rem 1.1rem; }
 .info-item-label { font-size:10px; color:var(--text3); font-family:var(--font-mono); letter-spacing:.14em; text-transform:uppercase; margin-bottom:6px; }
 .info-item-val { font-size:14px; color:var(--text); font-weight:600; word-break:break-word; }
-
-/* ── ONLINE PRESENCE PANEL ────────────────────────────────────── */
-.online-panel { background:var(--panel); border:1px solid var(--border2); border-radius:var(--card-radius); padding:1.2rem; margin-bottom:1.5rem; }
-.online-panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:6px; }
-.online-panel-title { font-family:var(--font-head); font-size:10px; letter-spacing:.18em; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
-.online-count-badge { font-family:var(--font-mono); font-size:10px; padding:2px 8px; border-radius:20px; }
-.online-agents-wrap { display:flex; flex-wrap:wrap; gap:8px; min-height:36px; align-items:center; }
-.online-agent-pill { display:flex; align-items:center; gap:6px; padding:5px 12px 5px 8px; border-radius:20px; background:rgba(0,255,136,.07); border:1px solid rgba(0,255,136,.2); font-size:12px; color:var(--text); }
-.online-dot-pulse { width:7px; height:7px; border-radius:50%; background:var(--online-green); box-shadow:0 0 0 0 rgba(0,255,136,.4); animation:pulse-ring 1.8s ease-in-out infinite; flex-shrink:0; }
-@keyframes pulse-ring { 0%{box-shadow:0 0 0 0 rgba(0,255,136,.5)} 60%{box-shadow:0 0 0 5px rgba(0,255,136,0)} 100%{box-shadow:0 0 0 0 rgba(0,255,136,0)} }
-.online-pill-team { font-size:10px; color:var(--text3); font-family:var(--font-mono); margin-left:2px; }
-.online-empty { font-size:12px; color:var(--text3); font-family:var(--font-mono); }
-.online-last-refresh { font-family:var(--font-mono); font-size:9px; color:var(--text3); }
 
 /* ── TOPBAR QUICK LINKS DROPDOWN ──────────────────────────────── */
 .quicklinks-dropdown { position:relative; }
@@ -556,12 +545,7 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 // ═════════════════════════════════════════════════════════════════
 //  CONFIG
 // ═════════════════════════════════════════════════════════════════
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbziXYJAGZwApshB8zRd2LF92kFkFDJ0SQgdoZXBOudi_f34_9M5HjwlSXSnQMvqxDH7/exec'; // e.g. https://script.google.com/macros/s/AKfycb.../exec
-
-const PRESENCE_KEY       = 'reac_presence';
-const HEARTBEAT_INTERVAL = 25000;
-const PRESENCE_TTL       = 45000;
-const PRESENCE_POLL_MS   = 20000;
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwf5YIV6RlHFwOkOVLKEIZnW80trdUMqLbynH7IfAVu2wsGY9QTTXec40zoey3YA_k_/exec'; // e.g. https://script.google.com/macros/s/AKfycb.../exec
 
 let currentUser    = null;
 let allAgents       = [];
@@ -574,7 +558,6 @@ let adminMonthIdx = 0, tlMonthIdx = 0, adminBreakdownMonthIdx = 0, adminOverview
 let currentTheme = 'futuristic';
 let chartInstances = {};
 let currentPage = 'dash';
-let heartbeatTimer=null, presencePollTimer=null;
 
 const METRICS = [
   { key:'tps', label:'TPS', color:'#378ADD' },
@@ -772,53 +755,6 @@ function logEvent(eventType, details) {
 }
 
 // ═════════════════════════════════════════════════════════════════
-//  PRESENCE SYSTEM
-// ═════════════════════════════════════════════════════════════════
-function presenceWrite(user) {
-  if (!user) return;
-  try {
-    const all = presenceReadAll();
-    all[user.email] = { email:user.email, name:user.name||user.email, role:user.role||'agent', ts:Date.now() };
-    localStorage.setItem(PRESENCE_KEY, JSON.stringify(all));
-  } catch(e) {}
-}
-function presenceRemove(email){ try{ const all=presenceReadAll(); delete all[email]; localStorage.setItem(PRESENCE_KEY, JSON.stringify(all)); }catch(e){} }
-function presenceReadAll(){ try{ const raw=localStorage.getItem(PRESENCE_KEY); return raw?JSON.parse(raw):{}; }catch(e){ return {}; } }
-function presenceGetOnline(){ const now=Date.now(); return Object.values(presenceReadAll()).filter(u=>(now-u.ts)<PRESENCE_TTL); }
-function startHeartbeat(user){ if(heartbeatTimer) clearInterval(heartbeatTimer); presenceWrite(user); heartbeatTimer=setInterval(()=>presenceWrite(user), HEARTBEAT_INTERVAL); }
-function stopHeartbeat(){ if(heartbeatTimer) clearInterval(heartbeatTimer); heartbeatTimer=null; if(currentUser) presenceRemove(currentUser.email); }
-
-function buildOnlinePanelHTML(accentColor) {
-  return `<div class="online-panel"><div class="online-panel-header">
-    <div class="online-panel-title" style="color:${accentColor}">${svgIcon('agents')}Agents Online Now
-      <span class="online-count-badge" id="online-count-badge" style="background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);color:var(--online-green)">0 online</span></div>
-    <span class="online-last-refresh" id="online-refresh-ts">Updated just now</span></div>
-    <div class="online-agents-wrap" id="online-agents-wrap"><span class="online-empty">No agents currently online</span></div></div>`;
-}
-function refreshOnlinePanel(tlFilter) {
-  const wrap=document.getElementById('online-agents-wrap'), badge=document.getElementById('online-count-badge'), tsEl=document.getElementById('online-refresh-ts');
-  if (!wrap) return;
-  const latestIdx = latestActiveIdxAcrossAgents(allAgents);
-  let online = presenceGetOnline().filter(u=>u.role==='agent');
-  if (tlFilter) {
-    const myTeamEmails = new Set(teamForMonth(tlFilter, latestIdx).map(a=>a.email));
-    online = online.filter(u=>myTeamEmails.has(u.email));
-  }
-  if (badge) badge.textContent = online.length+' online';
-  if (tsEl) tsEl.textContent = 'Updated '+new Date().toLocaleTimeString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  if (!online.length) { wrap.innerHTML='<span class="online-empty">No agents currently online</span>'; return; }
-  wrap.innerHTML = online.map(u=>{
-    const agent = allAgents.find(a=>a.email===u.email);
-    const tlEmail = (agent && agent.months?.[latestIdx]?.teamLeadEmail) || (agent && agent.teamLeadEmail) || '';
-    const tl = tlEmail ? mgmtUsers.find(m=>m.email===tlEmail) : null;
-    const displayName = agent ? shortName(agent.name) : u.name;
-    return `<div class="online-agent-pill">${avatarHTML(agent||{email:u.email,name:u.name},22)}<span>${displayName}</span>${tl?`<span class="online-pill-team">${shortName(tl.name)}</span>`:''}</div>`;
-  }).join('');
-}
-function startPresencePoll(tlFilter){ if(presencePollTimer) clearInterval(presencePollTimer); refreshOnlinePanel(tlFilter); presencePollTimer=setInterval(()=>refreshOnlinePanel(tlFilter), PRESENCE_POLL_MS); }
-function stopPresencePoll(){ if(presencePollTimer) clearInterval(presencePollTimer); presencePollTimer=null; }
-
-// ═════════════════════════════════════════════════════════════════
 //  INIT
 // ═════════════════════════════════════════════════════════════════
 window.addEventListener('load', async () => {
@@ -830,7 +766,6 @@ window.addEventListener('load', async () => {
 });
 window.addEventListener('beforeunload', () => {
   if (currentUser) { try{ navigator.sendBeacon && navigator.sendBeacon(GAS_URL+'?action=logEvent&email='+encodeURIComponent(currentUser.email)+'&eventType=Logout&details=Tab%20closed'); }catch(e){} }
-  stopHeartbeat(); stopPresencePoll();
 });
 function hideSplash(){ const s=document.getElementById('s-loading'); s.style.transition='opacity .3s'; s.style.opacity='0'; setTimeout(()=>s.classList.remove('active'),320); }
 function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); clearMsgs(); }
@@ -983,7 +918,6 @@ function setBtnLoading(id,on){ const btn=document.getElementById(id); if(!btn) r
 
 function doLogout() {
   logEvent('Logout', 'Signed out of REAC Hub');
-  stopHeartbeat(); stopPresencePoll();
   currentUser=null; _verifiedOtp=''; _signupPass=''; pendingEmail='';
   sessionStorage.removeItem('reac_user');
   show('s-login');
@@ -991,11 +925,12 @@ function doLogout() {
 
 // ── DASHBOARD LOADER ─────────────────────────────────────────────
 async function loadDashboard() {
-  const [dataRes, phRes, stRes, picRes] = await Promise.allSettled([
+  const [dataRes, phRes, stRes, picRes, allPicsRes] = await Promise.allSettled([
     gasGet('getData'),
     gasGet('getPlaceholders'),
     gasGet('getSettings', { email: currentUser.email }),
-    gasGet('getProfilePic', { email: currentUser.email })
+    gasGet('getProfilePic', { email: currentUser.email }),
+    gasGet('getAllProfilePics')
   ]);
 
   if (dataRes.status==='fulfilled') { allAgents = dataRes.value.agents||[]; mgmtUsers = dataRes.value.management||[]; }
@@ -1005,6 +940,12 @@ async function loadDashboard() {
 
   if (stRes.status==='fulfilled' && stRes.value.success) userSettings = stRes.value.settings;
 
+  // Populate profile picture cache for EVERY user (so avatars show correctly across
+  // the whole app — leaderboard, team tables, online lists, etc — not just your own).
+  if (allPicsRes.status==='fulfilled' && allPicsRes.value.success && allPicsRes.value.images) {
+    Object.assign(profilePicCache, allPicsRes.value.images);
+  }
+  // Make sure our own picture is present/fresh even if the bulk call failed.
   if (picRes.status==='fulfilled' && picRes.value.success && picRes.value.image) profilePicCache[currentUser.email] = picRes.value.image;
 
   setTheme(userSettings.theme||'futuristic', true);
@@ -1015,11 +956,9 @@ async function loadDashboard() {
   buildQuickLinksMenu();
   setupUserChip();
   show('s-app');
-  startHeartbeat(currentUser);
   renderCurrentPage();
 
   if (role==='admin' || role==='teamlead') {
-    startPresencePoll(role==='teamlead' ? currentUser.email : null);
     document.getElementById('app-sync-badge').innerHTML = '<div class="sync-dot" style="background:var(--purple)"></div>SYNCED';
   }
 }
@@ -1082,47 +1021,14 @@ function latestActiveMonthIdx(agent){ if(!agent||!agent.months) return -1; for(l
 function latestActiveIdxAcrossAgents(agents){ let best=-1; agents.forEach(a=>{const idx=latestActiveMonthIdx(a); if(idx>best) best=idx;}); return best; }
 
 // ═════════════════════════════════════════════════════════════════
-//  TEAM-LEAD RESOLUTION (month-aware — team membership is per-month,
-//  since agents can be reassigned between team leads month to month)
-// ═════════════════════════════════════════════════════════════════
-// Every agent whose Team Lead for THIS SPECIFIC month index matches tlEmail.
-// Uses a.months[monthIdx].teamLeadEmail — populated server-side directly
-// from column A of that month's tab (which is already an email address).
-function teamForMonth(tlEmail, monthIdx) {
-  if (!tlEmail || monthIdx===null || monthIdx===undefined || monthIdx<0) return [];
-  return allAgents.filter(a => (a.months?.[monthIdx]?.teamLeadEmail || '') === tlEmail);
-}
-// Like teamForMonth, but returns everyone (admin view) when tlFilter is falsy.
-function teamAgentsForMonth(tlFilter, monthIdx) {
-  if (!tlFilter) return allAgents;
-  return teamForMonth(tlFilter, monthIdx);
-}
-// Walks months newest -> oldest and returns the most recent month index where
-// this team lead had at least one agent with actual (non-Attrite) scores.
-function latestActiveTlMonthIdx(tlEmail) {
-  const allMonths = allAgents[0]?.months || [];
-  for (let i = allMonths.length - 1; i >= 0; i--) {
-    const team = teamForMonth(tlEmail, i).filter(a=>{ const m=a.months?.[i]; return m && m.count && m.overall!=='Attrite'; });
-    if (team.length) return i;
-  }
-  return -1;
-}
-
-// ═════════════════════════════════════════════════════════════════
 //  CHARTS: line / bar / donut
 // ═════════════════════════════════════════════════════════════════
 function chartTextColors(){ const isDark=currentTheme!=='clean'; return { grid: isDark?'rgba(140,140,140,.1)':'rgba(0,0,0,.06)', tick: isDark?'#8a94a3':'#94a3b8' }; }
-// monthTeamFn(monthIdx), when provided, returns the agent list to average FOR
-// THAT SPECIFIC MONTH — needed because team-lead membership can change month
-// to month. When omitted, the static agentList is used for every month (fine
-// for a single agent's own trend, or an admin's "all agents" trend).
-function buildLineChart(canvasId, agentList, monthTeamFn) {
+function buildLineChart(canvasId, agentList) {
   const canvas=document.getElementById(canvasId); if(!canvas) return;
   const allMonths=allAgents[0]?.months||[]; const labels=[]; const dataByMetric={};
   METRICS.forEach(m=>dataByMetric[m.key]=[]);
-  allMonths.forEach((mDef,mIdx)=>{
-    const list = monthTeamFn ? monthTeamFn(mIdx) : agentList;
-    const active=list.filter(a=>{const m=a.months?.[mIdx]; return m&&m.count&&m.overall!=='Attrite';}); if(!active.length) return;
+  allMonths.forEach((mDef,mIdx)=>{ const active=agentList.filter(a=>{const m=a.months?.[mIdx]; return m&&m.count&&m.overall!=='Attrite';}); if(!active.length) return;
     labels.push(mDef.label); METRICS.forEach(m=>{const av=avgField(active,mIdx,m.key); dataByMetric[m.key].push(av!==null?parseFloat(av.toFixed(2)):null);}); });
   if (chartInstances[canvasId]) { chartInstances[canvasId].destroy(); delete chartInstances[canvasId]; }
   const activeSet=getActiveMetrics(canvasId); const {grid,tick}=chartTextColors();
@@ -1131,13 +1037,11 @@ function buildLineChart(canvasId, agentList, monthTeamFn) {
       plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y!==null?ctx.parsed.y.toFixed(2)+'%':'—'}`}}},
       scales:{x:{grid:{color:grid},ticks:{color:tick,font:{size:10}}},y:{grid:{color:grid},ticks:{color:tick,font:{size:10},callback:v=>v+'%'},min:0,max:100}}}});
 }
-function buildBarChart(canvasId, agentList, monthTeamFn) {
+function buildBarChart(canvasId, agentList) {
   const canvas=document.getElementById(canvasId); if(!canvas) return;
   const allMonths=allAgents[0]?.months||[]; const labels=[]; const dataByMetric={};
   METRICS.forEach(m=>dataByMetric[m.key]=[]);
-  allMonths.forEach((mDef,mIdx)=>{
-    const list = monthTeamFn ? monthTeamFn(mIdx) : agentList;
-    const active=list.filter(a=>{const m=a.months?.[mIdx]; return m&&m.count&&m.overall!=='Attrite';}); if(!active.length) return;
+  allMonths.forEach((mDef,mIdx)=>{ const active=agentList.filter(a=>{const m=a.months?.[mIdx]; return m&&m.count&&m.overall!=='Attrite';}); if(!active.length) return;
     labels.push(mDef.label); METRICS.forEach(m=>{const av=avgField(active,mIdx,m.key); dataByMetric[m.key].push(av!==null?parseFloat(av.toFixed(2)):null);}); });
   if (chartInstances[canvasId]) { chartInstances[canvasId].destroy(); delete chartInstances[canvasId]; }
   const activeSet=getActiveMetrics(canvasId); const {grid,tick}=chartTextColors();
@@ -1157,7 +1061,7 @@ function buildDonutChart(canvasId, segments) {
   if (chartInstances[canvasId]) { chartInstances[canvasId].destroy(); delete chartInstances[canvasId]; }
   chartInstances[canvasId] = new Chart(canvas, { type:'doughnut',
     data:{ labels: segments.map(s=>s.label), datasets:[{ data: segments.map(s=>s.value), backgroundColor: segments.map(s=>s.color), borderWidth:0, hoverOffset:6 }] },
-    options:{ responsive:true, maintainAspectRatio:true, cutout:'68%', plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed}${segments[0].isPct?'%':''}`}}} }});
+    options:{ responsive:true, maintainAspectRatio:false, aspectRatio:1, cutout:'68%', plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed}${segments[0].isPct?'%':''}`}}} }});
 }
 function metricTogglesHTML(canvasId) {
   const activeSet=getActiveMetrics(canvasId);
@@ -1261,7 +1165,7 @@ function renderPerformanceAgent() {
       <div class="panel"><div class="panel-title">Score Bands</div>
         ${bandBarHTML('TPS Score', latest?.tps)}${bandBarHTML('Attendance', latest?.attendance)}${bandBarHTML('QA Score', latest?.qa)}${bandBarHTML('Overall Performance', latest?.overall)}</div>
       <div class="panel"><div class="panel-title">Score Composition — ${latest?latest.label:'N/A'}</div>
-        <div class="donut-wrap"><canvas id="${donutId}" width="150" height="150" style="max-width:150px"></canvas>
+        <div class="donut-wrap"><div class="donut-canvas-box"><canvas id="${donutId}"></canvas></div>
           <div class="donut-legend">
             <div class="donut-legend-item"><span class="donut-legend-dot" style="background:#378ADD"></span>TPS<span class="donut-legend-val">${tps.toFixed(1)}%</span></div>
             <div class="donut-legend-item"><span class="donut-legend-dot" style="background:var(--purple)"></span>Attendance<span class="donut-legend-val">${att.toFixed(1)}%</span></div>
@@ -1277,16 +1181,17 @@ function renderPerformanceAgent() {
 }
 function renderPerformanceManager(tlFilter, accent, scopeLabel) {
   const ca = document.getElementById('app-content-area');
-  const latestIdx = tlFilter ? latestActiveTlMonthIdx(tlFilter) : latestActiveIdxAcrossAgents(allAgents);
-  const latestLabel = latestIdx>=0 ? (allAgents[0]?.months?.[latestIdx]?.label||'') : '';
-  const active = teamAgentsForMonth(tlFilter, latestIdx).filter(a=>{const m=a.months?.[latestIdx]; return latestIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
+  const team = tlFilter ? allAgents.filter(a=>a.teamLeadEmail===tlFilter) : allAgents;
+  const latestIdx = latestActiveIdxAcrossAgents(team);
+  const latestLabel = latestIdx>=0 ? (team.find(a=>a.months?.[latestIdx])?.months[latestIdx]?.label||'') : '';
+  const active = team.filter(a=>{const m=a.months?.[latestIdx]; return latestIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
   const avgOv = avgField(active, latestIdx, 'overall'), avgTps=avgField(active,latestIdx,'tps'), avgAtt=avgField(active,latestIdx,'attendance'), avgQa=avgField(active,latestIdx,'qa');
 
   const prevIdx = latestIdx>0?latestIdx-1:-1;
-  const prevActive = prevIdx>=0 ? teamAgentsForMonth(tlFilter, prevIdx).filter(a=>{const m=a.months?.[prevIdx]; return m&&m.count&&m.overall!=='Attrite';}) : [];
+  const prevActive = prevIdx>=0 ? team.filter(a=>{const m=a.months?.[prevIdx]; return m&&m.count&&m.overall!=='Attrite';}) : [];
   const prevAvgOv = prevIdx>=0 ? avgField(prevActive, prevIdx, 'overall') : null;
   const delta = (avgOv!==null&&prevAvgOv!==null) ? (avgOv-prevAvgOv) : null;
-  const trendVals = (allAgents[0]?.months||[]).map((m,i)=>{ const act=teamAgentsForMonth(tlFilter, i).filter(a=>{const mm=a.months?.[i]; return mm&&mm.count&&mm.overall!=='Attrite';}); return act.length?avgField(act,i,'overall'):null; }).filter(v=>v!==null);
+  const trendVals = (allAgents[0]?.months||[]).map((m,i)=>{ const act=team.filter(a=>{const mm=a.months?.[i]; return mm&&mm.count&&mm.overall!=='Attrite';}); return act.length?avgField(act,i,'overall'):null; }).filter(v=>v!==null);
 
   const bands = { Excellent:0, Good:0, Fair:0, 'Needs Improvement':0 };
   active.forEach(a=>{ const n=pct(a.months[latestIdx]?.overall); const info=bandInfo(n); bands[info.label]=(bands[info.label]||0)+1; });
@@ -1309,7 +1214,7 @@ function renderPerformanceManager(tlFilter, accent, scopeLabel) {
       <div class="panel"><div class="panel-title" style="color:${accent}">Average Score Bands</div>
         ${bandBarHTML('Avg TPS', avgTps!==null?avgTps.toFixed(2)+'%':null)}${bandBarHTML('Avg Attendance', avgAtt!==null?avgAtt.toFixed(2)+'%':null)}${bandBarHTML('Avg QA', avgQa!==null?avgQa.toFixed(2)+'%':null)}${bandBarHTML('Avg Overall', avgOv!==null?avgOv.toFixed(2)+'%':null)}</div>
       <div class="panel"><div class="panel-title" style="color:${accent}">Team Split by Performance Band</div>
-        <div class="donut-wrap"><canvas id="${donutId}" width="150" height="150" style="max-width:150px"></canvas>
+        <div class="donut-wrap"><div class="donut-canvas-box"><canvas id="${donutId}"></canvas></div>
           <div class="donut-legend">
             <div class="donut-legend-item"><span class="donut-legend-dot" style="background:var(--band-excellent)"></span>Excellent<span class="donut-legend-val">${bands['Excellent']}</span></div>
             <div class="donut-legend-item"><span class="donut-legend-dot" style="background:var(--band-good)"></span>Good<span class="donut-legend-val">${bands['Good']}</span></div>
@@ -1356,26 +1261,25 @@ function renderAgentScores() {
 }
 function renderTlScores() {
   const ca = document.getElementById('app-content-area');
-  const allMonths = allAgents[0]?.months||[];
-  if (!allMonths.length) { ca.innerHTML='<div class="no-data"><div class="nd-icon">📊</div>No team data available.</div>'; return; }
-  if (tlMonthIdx===0) tlMonthIdx = latestActiveTlMonthIdx(currentUser.email);
+  const myTeam = allAgents.filter(a=>a.teamLeadEmail===currentUser.email);
+  const months = myTeam[0]?.months||[];
+  if (!months.length) { ca.innerHTML='<div class="no-data"><div class="nd-icon">📊</div>No team data available.</div>'; return; }
+  if (tlMonthIdx===0) tlMonthIdx = latestActiveIdxAcrossAgents(myTeam);
   const canvasId='chart-tl-scores';
   ca.innerHTML = `<div class="page-section">
     <div class="page-header"><div class="page-tag" style="color:#378ADD;border-color:rgba(55,138,221,.3)">// TEAM SCORES</div><h1>Team Scores</h1><p>Month-by-month breakdown for your team.</p></div>
     <div class="panel" style="margin-bottom:1.5rem"><div class="panel-title" style="color:#378ADD">Team Trend — All Months</div>${metricTogglesHTML(canvasId)}<canvas id="${canvasId}" height="130"></canvas></div>
     <div class="panel"><div class="panel-title" style="color:#378ADD">Monthly Records</div><div class="month-tabs" id="tl-month-tabs"></div>
       <div style="overflow-x:auto"><table class="data-table"><thead><tr id="tl-scores-thead"></tr></thead><tbody id="tl-scores-tbody"></tbody></table></div></div></div>`;
-  renderTlMonthTabs(allMonths); renderTlTable(tlMonthIdx);
-  setTimeout(()=>buildLineChart(canvasId, null, (mIdx)=>teamForMonth(currentUser.email, mIdx)), 60);
+  renderTlMonthTabs(months); renderTlTable(myTeam, tlMonthIdx);
+  setTimeout(()=>buildLineChart(canvasId, myTeam), 60);
 }
 function renderTlMonthTabs(months) { const el=document.getElementById('tl-month-tabs'); if(!el) return;
   el.innerHTML = months.map((m,i)=>`<button class="month-tab${i===tlMonthIdx?' active':''}" onclick="tlMonthSwitch(${i})">${m.label}</button>`).join(''); }
-function tlMonthSwitch(idx){ tlMonthIdx=idx; renderTlMonthTabs(allAgents[0]?.months||[]); renderTlTable(idx); }
-function renderTlTable(monthIdx) {
+function tlMonthSwitch(idx){ tlMonthIdx=idx; const myTeam=allAgents.filter(a=>a.teamLeadEmail===currentUser.email); renderTlMonthTabs(myTeam[0]?.months||[]); renderTlTable(myTeam, idx); }
+function renderTlTable(team, monthIdx) {
   const thead=document.getElementById('tl-scores-thead'), tbody=document.getElementById('tl-scores-tbody'); if(!thead||!tbody) return;
   thead.innerHTML='<th>Rank</th><th>Agent</th><th>Count</th><th>TPS</th><th>Attendance</th><th>QA Score</th><th>Overall</th>';
-  const team = teamForMonth(currentUser.email, monthIdx);
-  if (!team.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:20px">No team members recorded for this month.</td></tr>'; return; }
   const sorted=[...team].sort((a,b)=>(parseInt(a.months?.[monthIdx]?.rank)||9999)-(parseInt(b.months?.[monthIdx]?.rank)||9999));
   tbody.innerHTML = sorted.map(a=>{ const m=a.months?.[monthIdx];
     if (!m||!m.count) return `<tr><td>—</td><td class="agent-cell">${avatarHTML(a,28)}<span class="agent-cell-name">${a.name}</span></td><td colspan="5" style="color:var(--text3)">No data</td></tr>`;
@@ -1389,8 +1293,7 @@ function renderTlTable(monthIdx) {
 // ═════════════════════════════════════════════════════════════════
 function renderLeaderboardPage(role) {
   if (role==='admin') return renderLeaderboard([], 'var(--purple)', true);
-  const latestIdx = latestActiveIdxAcrossAgents(allAgents);
-  const myTeamEmails = teamForMonth(currentUser.email, latestIdx).map(a=>a.email);
+  const myTeamEmails = allAgents.filter(a=>a.teamLeadEmail===currentUser.email).map(a=>a.email);
   renderLeaderboard(myTeamEmails, '#378ADD', false);
 }
 function renderLeaderboard(highlightEmails, accent, isAdmin) {
@@ -1410,7 +1313,7 @@ function renderLeaderboard(highlightEmails, accent, isAdmin) {
         <div class="metric-sub">${fmtPct(m.overall)} overall</div></div>`; }).join('')}</div>
     <div class="panel"><div class="panel-title" style="color:${accent}">Full Rankings — ${latestLabel}${!isAdmin?' (Your team highlighted)':''}</div>
       <div style="overflow-x:auto"><table class="data-table"><thead><tr><th>Rank</th><th>Agent</th><th>Team Lead</th><th>TPS</th><th>Attendance</th><th>QA</th><th>Overall</th></tr></thead><tbody>
-        ${sorted.map(a=>{ const m=a.months[latestIdx]; const tl=mgmtUsers.find(u=>u.email===m.teamLeadEmail); const isMyTeam=highlightSet.has(a.email);
+        ${sorted.map(a=>{ const m=a.months[latestIdx]; const tl=mgmtUsers.find(u=>u.email===a.teamLeadEmail); const isMyTeam=highlightSet.has(a.email);
           return `<tr style="${isMyTeam&&!isAdmin?'background:rgba(55,138,221,.06)':''}">
             <td>${rankBadgeHTML(m.rank)}</td>
             <td><div class="agent-cell">${avatarHTML(a,28)}<span class="agent-cell-name">${a.name}</span>${isMyTeam&&!isAdmin?'<span class="my-team-chip">My Team</span>':''}</div></td>
@@ -1441,7 +1344,6 @@ function renderAdminOverview() {
         <select class="select-ctrl" id="admin-overview-month-sel" onchange="adminOverviewMonthSwitch(this.value)">${allMonths.map((m,i)=>`<option value="${i}"${i===selIdx?' selected':''}>${m.label}</option>`).join('')}</select>
       </div>
     </div>
-    ${buildOnlinePanelHTML('var(--purple)')}
     <div class="metrics-grid-5">
       <div class="metric-card" style="--card-color:var(--purple)"><div class="metric-label">Total Agents</div><div class="metric-value">${allAgents.length}</div><div class="metric-sub">${active.length} active · ${selLabel}</div></div>
       <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Avg TPS</div><div class="metric-value">${avgTps?avgTps.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
@@ -1454,15 +1356,14 @@ function renderAdminOverview() {
       <div id="admin-team-breakdown-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem">${buildTeamBreakdownCards(leads,adminBreakdownMonthIdx)}</div></div>`:''}
     <div class="panel"><div class="panel-title" style="color:var(--purple)">Score Rankings — ${selLabel}</div><div style="overflow-x:auto"><table class="data-table">
       <thead><tr><th>Rank</th><th>Agent</th><th>Team Lead</th><th>TPS</th><th>Attendance</th><th>QA</th><th>Overall</th></tr></thead><tbody>
-        ${[...active].sort((a,b)=>(parseInt(a.months[selIdx]?.rank)||9999)-(parseInt(b.months[selIdx]?.rank)||9999)).map(a=>{ const m=a.months[selIdx]; const tl=mgmtUsers.find(u=>u.email===m.teamLeadEmail);
+        ${[...active].sort((a,b)=>(parseInt(a.months[selIdx]?.rank)||9999)-(parseInt(b.months[selIdx]?.rank)||9999)).map(a=>{ const m=a.months[selIdx]; const tl=mgmtUsers.find(u=>u.email===a.teamLeadEmail);
           return `<tr><td>${rankBadgeHTML(m.rank)}</td><td><div class="agent-cell">${avatarHTML(a,28)}<span class="agent-cell-name">${a.name}</span></div></td><td><span class="team-chip">${tl?tl.name:'—'}</span></td>
             <td>${fmtPct(m.tps)}</td><td>${fmtPct(m.attendance)}</td><td>${fmtPct(m.qa)}</td><td>${scoreBarHTML(m.overall)}</td></tr>`; }).join('')}
       </tbody></table></div></div></div>`;
-  startPresencePoll(null);
 }
 function adminOverviewMonthSwitch(idx) { adminOverviewMonthIdx = parseInt(idx); renderAdminOverview(); }
 function buildTeamBreakdownCards(leads, monthIdx) {
-  return leads.map(tl=>{ const team=teamForMonth(tl.email, monthIdx); const teamActive=team.filter(a=>{const m=a.months?.[monthIdx]; return m&&m.count&&m.overall!=='Attrite';});
+  return leads.map(tl=>{ const team=allAgents.filter(a=>a.teamLeadEmail===tl.email); const teamActive=team.filter(a=>{const m=a.months?.[monthIdx]; return m&&m.count&&m.overall!=='Attrite';});
     const avTps=avgField(teamActive,monthIdx,'tps'), avAtt=avgField(teamActive,monthIdx,'attendance'), avQa=avgField(teamActive,monthIdx,'qa'), avOv=avgField(teamActive,monthIdx,'overall');
     return `<div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
       <div class="agent-cell">${avatarHTML(tl,26)}<span style="font-family:var(--font-head);font-size:11px;color:var(--purple)">${tl.name}</span></div>
@@ -1495,7 +1396,7 @@ function renderAdminAgentsTable(monthIdx) {
   const q=(document.getElementById('admin-search')?.value||'').toLowerCase();
   const sorted=[...allAgents].sort((a,b)=>(parseInt(a.months?.[monthIdx]?.rank)||9999)-(parseInt(b.months?.[monthIdx]?.rank)||9999));
   tbody.innerHTML = sorted.filter(a=>!q||a.name.toLowerCase().includes(q)||a.email.includes(q)).map(a=>{
-    const m=a.months?.[monthIdx]; const tl = (m && m.teamLeadEmail) ? mgmtUsers.find(u=>u.email===m.teamLeadEmail) : null;
+    const m=a.months?.[monthIdx]; const tl=mgmtUsers.find(u=>u.email===a.teamLeadEmail);
     const nameCell = `<div class="agent-cell">${avatarHTML(a,28)}<div><div class="agent-cell-name">${a.name}</div><div class="agent-cell-sub">${a.email}</div></div></div>`;
     if (!m||!m.count) return `<tr><td>—</td><td>${nameCell}</td><td><span class="team-chip">${tl?tl.name:'—'}</span></td><td colspan="5" style="color:var(--text3)">No data this month</td></tr>`;
     if (m.overall==='Attrite') return `<tr><td>—</td><td>${nameCell}</td><td><span class="team-chip">${tl?tl.name:'—'}</span></td><td>${m.count||'—'}</td><td colspan="4"><span class="attrite-badge">Attrited</span></td></tr>`;
@@ -1507,12 +1408,14 @@ function filterAdminTable(){ renderAdminAgentsTable(adminMonthIdx); }
 async function renderActivityLog() {
   const ca = document.getElementById('app-content-area');
   const role = currentUser.role;
-  const scopeCopy = role==='admin' ? 'Login, logout, and activity for every user in the system.' : role==='teamlead' ? 'Login, logout, and activity for you and your team.' : 'Your own login, logout, and activity history.';
-  const scopeTag = role==='admin' ? 'ALL USERS' : role==='teamlead' ? 'MY TEAM' : 'MY ACTIVITY';
+  // Agents, Senior POCs, and Team Leads may only ever see their OWN activity.
+  // Only Admin/Master Admin can see activity for every user in the system.
+  const scopeCopy = role==='admin' ? 'Login, logout, and activity for every user in the system.' : 'Your own login, logout, and activity history.';
+  const scopeTag = role==='admin' ? 'ALL USERS' : 'MY ACTIVITY';
   ca.innerHTML = `<div class="page-section"><div class="page-header"><div class="page-tag">// ${scopeTag}</div><h1>Activity Log</h1><p>${scopeCopy}</p></div>
     <div class="panel"><div class="panel-title">Recent Events</div><div id="activity-log-body" style="overflow-x:auto"><div class="no-data"><div class="nd-icon">⏳</div>Loading…</div></div></div></div>`;
   try {
-    const res = await gasGet('getActivity', { email: currentUser.email, limit: 150 });
+    const res = await gasGet('getActivity', { email: currentUser.email, role: role, limit: 150 });
     const rows = res.rows||[];
     const body = document.getElementById('activity-log-body');
     if (!rows.length) { body.innerHTML='<div class="no-data"><div class="nd-icon">📭</div>No activity recorded yet.</div>'; return; }
@@ -1528,13 +1431,13 @@ async function renderActivityLog() {
 // ═════════════════════════════════════════════════════════════════
 function renderTlOverview() {
   const ca = document.getElementById('app-content-area');
-  const allMonths = allAgents[0]?.months || [];
-  const latestIdx = latestActiveTlMonthIdx(currentUser.email);
+  const myTeam = allAgents.filter(a=>a.teamLeadEmail===currentUser.email);
+  const allMonths = myTeam[0]?.months || allAgents[0]?.months || [];
+  const latestIdx = latestActiveIdxAcrossAgents(myTeam);
   if (tlOverviewMonthIdx === -1) tlOverviewMonthIdx = latestIdx;
   const selIdx = tlOverviewMonthIdx;
   const selLabel = allMonths[selIdx]?.label || '—';
-  const myTeamThisMonth = teamForMonth(currentUser.email, selIdx);
-  const active = myTeamThisMonth.filter(a=>{const m=a.months?.[selIdx]; return selIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
+  const active = myTeam.filter(a=>{const m=a.months?.[selIdx]; return selIdx>=0&&m&&m.count&&m.overall!=='Attrite';});
   const avgOv=avgField(active,selIdx,'overall'), avgTps=avgField(active,selIdx,'tps'), avgAtt=avgField(active,selIdx,'attendance'), avgQa=avgField(active,selIdx,'qa');
   const sorted=[...active].sort((a,b)=>(parseInt(a.months[selIdx]?.rank)||9999)-(parseInt(b.months[selIdx]?.rank)||9999));
   const canvasId='chart-tl-trend';
@@ -1542,13 +1445,12 @@ function renderTlOverview() {
     <div class="page-header">
       <div class="page-tag" style="color:#378ADD;border-color:rgba(55,138,221,.3)">// ${selLabel.toUpperCase()} · MY TEAM</div>
       <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
-        <div><h1>Team Overview</h1><p>Performance summary for your team — ${myTeamThisMonth.length} agents, ${active.length} active this period.</p></div>
+        <div><h1>Team Overview</h1><p>Performance summary for your team — ${myTeam.length} agents, ${active.length} active this period.</p></div>
         <select class="select-ctrl" id="tl-overview-month-sel" onchange="tlOverviewMonthSwitch(this.value)">${allMonths.map((m,i)=>`<option value="${i}"${i===selIdx?' selected':''}>${m.label}</option>`).join('')}</select>
       </div>
     </div>
-    ${buildOnlinePanelHTML('#378ADD')}
     <div class="metrics-grid-5">
-      <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Team Members</div><div class="metric-value">${myTeamThisMonth.length}</div><div class="metric-sub">${active.length} active · ${selLabel}</div></div>
+      <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Team Members</div><div class="metric-value">${myTeam.length}</div><div class="metric-sub">${active.length} active · ${selLabel}</div></div>
       <div class="metric-card" style="--card-color:#378ADD"><div class="metric-label">Avg TPS</div><div class="metric-value">${avgTps?avgTps.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
       <div class="metric-card" style="--card-color:var(--purple)"><div class="metric-label">Avg Attendance</div><div class="metric-value">${avgAtt?avgAtt.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
       <div class="metric-card" style="--card-color:var(--warn)"><div class="metric-label">Avg QA Score</div><div class="metric-value">${avgQa?avgQa.toFixed(1)+'%':'—'}</div><div class="metric-sub">${selLabel}</div></div>
@@ -1559,11 +1461,9 @@ function renderTlOverview() {
       <thead><tr><th>Rank</th><th>Agent</th><th>TPS</th><th>Attendance</th><th>QA</th><th>Overall</th></tr></thead><tbody>
         ${sorted.map(a=>{ const m=a.months[selIdx]; return `<tr><td>${rankBadgeHTML(m.rank)}</td><td><div class="agent-cell">${avatarHTML(a,28)}<span class="agent-cell-name">${a.name}</span></div></td>
           <td>${fmtPct(m.tps)}</td><td>${fmtPct(m.attendance)}</td><td>${fmtPct(m.qa)}</td><td>${scoreBarHTML(m.overall)}</td></tr>`; }).join('')}
-        ${myTeamThisMonth.filter(a=>{const m=a.months?.[selIdx]; return !m||!m.count||m.overall==='Attrite';}).map(a=>`<tr><td>—</td><td>${a.name}</td><td colspan="4"><span class="attrite-badge">${a.months?.[selIdx]?.overall==='Attrite'?'Attrited':'No Data'}</span></td></tr>`).join('')}
-        ${!myTeamThisMonth.length?'<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">No agents were assigned to your team in this period.</td></tr>':''}
+        ${myTeam.filter(a=>{const m=a.months?.[selIdx]; return !m||!m.count||m.overall==='Attrite';}).map(a=>`<tr><td>—</td><td>${a.name}</td><td colspan="4"><span class="attrite-badge">${a.months?.[selIdx]?.overall==='Attrite'?'Attrited':'No Data'}</span></td></tr>`).join('')}
       </tbody></table></div></div></div>`;
-  startPresencePoll(currentUser.email);
-  setTimeout(()=>buildLineChart(canvasId, null, (mIdx)=>teamForMonth(currentUser.email, mIdx)), 60);
+  setTimeout(()=>buildLineChart(canvasId, myTeam), 60);
 }
 function tlOverviewMonthSwitch(idx) { tlOverviewMonthIdx = parseInt(idx); renderTlOverview(); }
 
