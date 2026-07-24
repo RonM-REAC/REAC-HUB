@@ -112,6 +112,12 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .field input, .field select { width:100%; height:42px; padding:0 14px; background:rgba(0,255,231,.03); border:1px solid var(--border2); border-radius:var(--input-radius); color:var(--text); font-family:var(--font-mono); font-size:13px; outline:none; transition:.2s; }
 .field input::placeholder { color:var(--text3); }
 .field input:focus { border-color:var(--neon); box-shadow:0 0 22px rgba(0,255,231,.1); }
+/* ── PASSWORD VISIBILITY TOGGLE ───────────────────────────────── */
+.pass-input-wrap { position:relative; }
+.pass-input-wrap input { padding-right:44px; }
+.pass-toggle-btn { position:absolute; right:6px; top:0; height:42px; width:34px; background:none; border:none; cursor:pointer; color:var(--text3); display:flex; align-items:center; justify-content:center; transition:color .2s; }
+.pass-toggle-btn:hover { color:var(--neon); }
+.pass-toggle-btn svg { width:18px; height:18px; stroke:currentColor; }
 .msg-box { display:none; border-radius:3px; padding:10px 14px; font-size:12px; font-family:var(--font-mono); margin-bottom:14px; border:1px solid; }
 .msg-error { color:var(--danger); border-color:rgba(255,77,109,.35); background:rgba(255,77,109,.08); }
 .msg-ok { color:var(--neon); border-color:rgba(0,255,231,.35); background:rgba(0,255,231,.08); }
@@ -375,7 +381,14 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
     <div class="msg-box msg-error" id="login-err"></div>
     <div class="msg-box msg-ok" id="login-ok"></div>
     <div class="field"><label>Email Address</label><input type="email" id="login-email" placeholder="your@reacrevenuesolutions.com" autocomplete="email"/></div>
-    <div class="field"><label>Security Key / Password</label><input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"/></div>
+    <div class="field"><label>Security Key / Password</label>
+      <div class="pass-input-wrap">
+        <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"/>
+        <button type="button" class="pass-toggle-btn" onclick="togglePassVisibility('login-pass', this)" tabindex="-1" aria-label="Show password">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
     <button class="btn-primary" id="login-btn" onclick="doLogin()"><span>⬡ AUTHENTICATE</span></button>
     <div class="auth-footer">
       <button onclick="show('s-forgot')">Forgot password?</button><span class="sep">|</span>
@@ -399,7 +412,12 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
     <div class="field"><label style="color:var(--neon3)">Email Address</label><input type="email" id="signup-email" placeholder="your@reacrevenuesolutions.com"/></div>
     <div class="field">
       <label style="color:var(--neon3)">Create Password</label>
-      <input type="password" id="signup-pass" placeholder="Min. 8 characters" oninput="checkPassRules('signup')"/>
+      <div class="pass-input-wrap">
+        <input type="password" id="signup-pass" placeholder="Min. 8 characters" oninput="checkPassRules('signup')"/>
+        <button type="button" class="pass-toggle-btn" onclick="togglePassVisibility('signup-pass', this)" tabindex="-1" aria-label="Show password">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
       <div class="pass-strength"><div class="pass-strength-fill" id="signup-strength-fill"></div></div>
       <div class="pass-rules" id="signup-pass-rules">
         <span class="pass-rule" id="sr-len">○ 8+ characters</span>
@@ -408,7 +426,14 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
         <span class="pass-rule" id="sr-sym">○ Special character</span>
       </div>
     </div>
-    <div class="field"><label style="color:var(--neon3)">Confirm Password</label><input type="password" id="signup-pass2" placeholder="Repeat password"/></div>
+    <div class="field"><label style="color:var(--neon3)">Confirm Password</label>
+      <div class="pass-input-wrap">
+        <input type="password" id="signup-pass2" placeholder="Repeat password"/>
+        <button type="button" class="pass-toggle-btn" onclick="togglePassVisibility('signup-pass2', this)" tabindex="-1" aria-label="Show password">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
     <button class="btn-primary" id="signup-btn" onclick="doSignup()" style="border-color:var(--neon3);color:var(--neon3)"><span>⬡ SUBMIT ENROLLMENT</span></button>
     <div class="auth-footer"><button onclick="show('s-login')" style="color:var(--text3)">← Back to login</button></div>
   </div>
@@ -472,7 +497,12 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
     <div class="msg-box msg-ok" id="newpass-ok"></div>
     <div class="field">
       <label>New Password</label>
-      <input type="password" id="new-pass" placeholder="Min. 8 characters" oninput="checkPassRules('new')"/>
+      <div class="pass-input-wrap">
+        <input type="password" id="new-pass" placeholder="Min. 8 characters" oninput="checkPassRules('new')"/>
+        <button type="button" class="pass-toggle-btn" onclick="togglePassVisibility('new-pass', this)" tabindex="-1" aria-label="Show password">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
       <div class="pass-strength"><div class="pass-strength-fill" id="new-strength-fill"></div></div>
       <div class="pass-rules" id="new-pass-rules">
         <span class="pass-rule" id="nr-len">○ 8+ characters</span>
@@ -481,7 +511,14 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
         <span class="pass-rule" id="nr-sym">○ Special character</span>
       </div>
     </div>
-    <div class="field"><label>Confirm New Password</label><input type="password" id="new-pass2" placeholder="Repeat new password"/></div>
+    <div class="field"><label>Confirm New Password</label>
+      <div class="pass-input-wrap">
+        <input type="password" id="new-pass2" placeholder="Repeat new password"/>
+        <button type="button" class="pass-toggle-btn" onclick="togglePassVisibility('new-pass2', this)" tabindex="-1" aria-label="Show password">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
     <button class="btn-primary" id="newpass-btn" onclick="doSetNewPassword()"><span>⬡ SET PASSWORD</span></button>
     <button class="btn-ghost" onclick="show('s-login')">← Back to login</button>
   </div>
@@ -545,7 +582,7 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 // ═════════════════════════════════════════════════════════════════
 //  CONFIG
 // ═════════════════════════════════════════════════════════════════
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwessgZF4-KLw_uawXOPMmF3OYcAkGfUf-a-la2STfynUzfUhwZOFrQ7Yhi6Xb5ejaM/exec'; // e.g. https://script.google.com/macros/s/AKfycb.../exec
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbw8wHqymUidrIVQ8jtrXBX9ugVK2QdkfKoVmkVpwyv2YByFeN_LXp-KSJj7vypz6DL6/exec'; // e.g. https://script.google.com/macros/s/AKfycb.../exec
 
 let currentUser    = null;
 let sessionToken   = null; // server-verified session token, issued at login (v6.4)
@@ -589,6 +626,20 @@ function setTheme(theme, skipSave) {
 }
 
 // ═════════════════════════════════════════════════════════════════
+//  PASSWORD VISIBILITY TOGGLE
+// ═════════════════════════════════════════════════════════════════
+const EYE_OPEN_PATH = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>';
+const EYE_OFF_PATH  = '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a19.4 19.4 0 0 1 5.06-6.06"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a19.5 19.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+function togglePassVisibility(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const willShow = input.type === 'password';
+  input.type = willShow ? 'text' : 'password';
+  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${willShow ? EYE_OFF_PATH : EYE_OPEN_PATH}</svg>`;
+  btn.setAttribute('aria-label', willShow ? 'Hide password' : 'Show password');
+}
+
+// ═════════════════════════════════════════════════════════════════
 //  SOUND (click tone / notification tone)
 // ═════════════════════════════════════════════════════════════════
 let audioCtx = null;
@@ -615,7 +666,7 @@ function playNotifTone() {
   else { playTone(660,.12,'sine'); setTimeout(()=>playTone(880,.18,'sine'),110); }
 }
 document.addEventListener('click', (e)=>{
-  if (e.target.closest('.nav-item, .btn-primary, .theme-btn, .month-tab, .metric-toggle-btn, .tz-btn, .ql-item, .quicklinks-btn')) playClickTone();
+  if (e.target.closest('.nav-item, .btn-primary, .theme-btn, .month-tab, .metric-toggle-btn, .tz-btn, .ql-item, .quicklinks-btn, .pass-toggle-btn')) playClickTone();
 }, true);
 
 // ═════════════════════════════════════════════════════════════════
