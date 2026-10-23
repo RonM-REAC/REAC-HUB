@@ -7,9 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono:wght@400;500&family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-/* ══════════════════════════════════════════════════════════════
-   THEME 1 — FUTURISTIC (neon dark, default)
-   ══════════════════════════════════════════════════════════════ */
+
 :root, [data-theme="futuristic"] {
   --neon:#00ffe7; --neon2:#7b5ea7; --neon3:#ff6b35; --purple:#a78bfa;
   --gold:#ffd700; --silver:#c0c0c0; --bronze:#cd7f32;
@@ -22,9 +20,7 @@
   --card-radius:4px; --input-radius:2px; --btn-radius:2px; --auth-card-bg:rgba(8,15,26,.92);
   --online-green:#00ff88; --band-excellent:#00ffe7; --band-good:#378ADD; --band-fair:#ffb547; --band-poor:#ff4d6d;
 }
-/* ══════════════════════════════════════════════════════════════
-   THEME 2 — CLEAN (flat light)
-   ══════════════════════════════════════════════════════════════ */
+
 [data-theme="clean"] {
   --neon:#2563eb; --neon2:#7c3aed; --neon3:#dc2626; --purple:#7c3aed;
   --gold:#d97706; --silver:#6b7280; --bronze:#92400e;
@@ -37,9 +33,7 @@
   --card-radius:10px; --input-radius:8px; --btn-radius:8px; --auth-card-bg:#ffffff;
   --online-green:#059669; --band-excellent:#059669; --band-good:#2563eb; --band-fair:#d97706; --band-poor:#dc2626;
 }
-/* ══════════════════════════════════════════════════════════════
-   THEME 3 — FLAT DARK (soft rounded, muted, reference-image feel)
-   ══════════════════════════════════════════════════════════════ */
+
 [data-theme="flatdark"] {
   --neon:#6ee7a3; --neon2:#8b93f8; --neon3:#f0a860; --purple:#8b93f8;
   --gold:#f4c95d; --silver:#b7bdc9; --bronze:#c98a52;
@@ -53,7 +47,7 @@
   --online-green:#6ee7a3; --band-excellent:#6ee7a3; --band-good:#8b93f8; --band-fair:#f0a860; --band-poor:#f27878;
 }
 
-/* Theme-specific ambience toggles */
+
 [data-theme="clean"] body, [data-theme="flatdark"] body { background:var(--bg); }
 [data-theme="clean"] .grid-overlay, [data-theme="flatdark"] .grid-overlay,
 [data-theme="clean"] .vignette, [data-theme="flatdark"] .vignette,
@@ -112,7 +106,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .field input, .field select { width:100%; height:42px; padding:0 14px; background:rgba(0,255,231,.03); border:1px solid var(--border2); border-radius:var(--input-radius); color:var(--text); font-family:var(--font-mono); font-size:13px; outline:none; transition:.2s; }
 .field input::placeholder { color:var(--text3); }
 .field input:focus { border-color:var(--neon); box-shadow:0 0 22px rgba(0,255,231,.1); }
-/* ── PASSWORD VISIBILITY TOGGLE ───────────────────────────────── */
 .pass-input-wrap { position:relative; }
 .pass-input-wrap input { padding-right:44px; }
 .pass-toggle-btn { position:absolute; right:6px; top:0; height:42px; width:34px; background:none; border:none; cursor:pointer; color:var(--text3); display:flex; align-items:center; justify-content:center; transition:color .2s; }
@@ -266,7 +259,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .spinner-inline { display:inline-block; width:13px; height:13px; border:2px solid rgba(0,255,231,.25); border-top-color:var(--neon); border-radius:50%; animation:spin .7s linear infinite; vertical-align:middle; margin-right:6px; }
 .purple-accent { --accent:var(--purple); }
 
-/* ── RANK/TREND BIG-PERCENT PANEL ─────────────────────────────── */
 .trend-panel { display:flex; align-items:flex-start; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; }
 .trend-left { flex:1; min-width:180px; }
 .trend-big { font-family:var(--font-head); font-size:46px; font-weight:800; color:var(--card-color,var(--neon)); line-height:1; display:flex; align-items:baseline; gap:10px; }
@@ -277,7 +269,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .trend-caption { font-size:12px; color:var(--text2); margin-top:8px; }
 .trend-spark { flex:1.3; min-width:220px; max-width:340px; }
 
-/* ── DONUT CHART LEGEND ───────────────────────────────────────── */
 .donut-wrap { display:flex; align-items:center; gap:1.4rem; flex-wrap:wrap; justify-content:center; }
 .donut-canvas-box { position:relative; width:150px; height:150px; flex-shrink:0; }
 .donut-canvas-box canvas { position:absolute; inset:0; width:100% !important; height:100% !important; }
@@ -286,7 +277,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .donut-legend-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
 .donut-legend-val { margin-left:auto; font-family:var(--font-mono); font-weight:700; color:var(--text2); padding-left:14px; }
 
-/* ── SCORE BAND BARS ──────────────────────────────────────────── */
 .band-row { margin-bottom:1.1rem; }
 .band-row:last-child { margin-bottom:0; }
 .band-row-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
@@ -297,7 +287,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .band-needle { position:absolute; top:-3px; width:3px; height:16px; border-radius:2px; background:var(--text); box-shadow:0 0 6px rgba(0,0,0,.4); transition:left .8s ease; }
 .band-tag { display:inline-block; font-size:10px; font-family:var(--font-mono); padding:1px 7px; border-radius:20px; margin-left:8px; }
 
-/* ── SETTINGS PAGE ────────────────────────────────────────────── */
 .theme-picker { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
 .theme-card { border:2px solid var(--border2); border-radius:12px; padding:12px; cursor:pointer; transition:.2s; text-align:center; }
 .theme-card.selected { border-color:var(--neon); box-shadow:0 0 0 3px rgba(0,255,231,.12); }
@@ -321,7 +310,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .upload-btn { display:inline-block; padding:9px 16px; border:1px solid var(--neon); border-radius:var(--btn-radius); color:var(--neon); font-family:var(--font-mono); font-size:11px; cursor:pointer; letter-spacing:.08em; }
 .upload-btn:hover { background:rgba(0,255,231,.08); }
 
-/* ── PROFILE PAGE ─────────────────────────────────────────────── */
 .profile-header { display:flex; align-items:center; gap:1.4rem; margin-bottom:1.6rem; flex-wrap:wrap; }
 .profile-avatar { width:92px; height:92px; border-radius:50%; border:2px solid var(--neon); background:rgba(0,255,231,.08); display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-size:26px; color:var(--neon); overflow:hidden; }
 .profile-avatar img { width:100%; height:100%; object-fit:cover; }
@@ -332,7 +320,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .info-item-label { font-size:10px; color:var(--text3); font-family:var(--font-mono); letter-spacing:.14em; text-transform:uppercase; margin-bottom:6px; }
 .info-item-val { font-size:14px; color:var(--text); font-weight:600; word-break:break-word; }
 
-/* ── TOPBAR QUICK LINKS DROPDOWN ──────────────────────────────── */
 .quicklinks-dropdown { position:relative; }
 .quicklinks-btn { display:flex; align-items:center; gap:6px; height:32px; padding:0 12px; background:var(--bg3); border:1px solid var(--border2); border-radius:20px; color:var(--text2); font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; cursor:pointer; transition:.2s; white-space:nowrap; }
 .quicklinks-btn:hover { border-color:var(--neon); color:var(--neon); }
@@ -346,7 +333,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 .ql-item-ext { opacity:.45; font-size:10px; flex-shrink:0; }
 .ql-empty { text-align:center; padding:20px 10px; color:var(--text3); font-size:11px; font-family:var(--font-mono); }
 
-/* ── TIMEZONE SWITCH ───────────────────────────────────────────── */
 .tz-switch { display:flex; align-items:center; gap:4px; background:var(--bg3); border:1px solid var(--border2); border-radius:20px; padding:3px; }
 .tz-btn { padding:5px 10px; border-radius:14px; border:none; cursor:pointer; font-size:9px; font-family:var(--font-mono); letter-spacing:.06em; transition:.2s; background:transparent; color:var(--text3); }
 .tz-btn.active { background:var(--neon); color:var(--bg); font-weight:700; }
@@ -360,7 +346,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 <div class="vignette"></div>
 <div class="scanline"></div>
 
-<!-- LOADING -->
 <div id="s-loading" class="screen active">
   <div class="load-logo">REAC HUB</div>
   <div class="load-sub">Loading. . .</div>
@@ -368,7 +353,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
   <div class="load-bar-wrap"><div class="load-bar"></div></div>
 </div>
 
-<!-- LOGIN -->
 <div id="s-login" class="screen auth-screen">
   <div class="auth-bg-glow"></div>
   <div class="auth-logo">
@@ -397,7 +381,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
   </div>
 </div>
 
-<!-- SIGNUP -->
 <div id="s-signup" class="screen auth-screen">
   <div class="auth-bg-glow" style="background:radial-gradient(circle,rgba(255,107,53,.05) 0%,transparent 65%)"></div>
   <div class="auth-logo">
@@ -439,7 +422,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
   </div>
 </div>
 
-<!-- FORGOT -->
 <div id="s-forgot" class="screen auth-screen">
   <div class="auth-bg-glow" style="background:radial-gradient(circle,rgba(167,139,250,.06) 0%,transparent 65%)"></div>
   <div class="auth-logo">
@@ -457,7 +439,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
   </div>
 </div>
 
-<!-- OTP -->
 <div id="s-otp" class="screen auth-screen">
   <div class="auth-bg-glow"></div>
   <div class="auth-logo">
@@ -483,7 +464,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
   </div>
 </div>
 
-<!-- NEW PASSWORD -->
 <div id="s-newpass" class="screen auth-screen">
   <div class="auth-bg-glow"></div>
   <div class="auth-logo">
@@ -524,7 +504,6 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
   </div>
 </div>
 
-<!-- ═══ MAIN APP (single shared shell for Agent / Team Lead / Admin / Senior POC) ═══ -->
 <div id="s-app" class="screen app-screen">
   <div class="sidebar-open-btn" id="app-open-btn" onclick="toggleSidebar()">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -579,18 +558,16 @@ body { background:var(--bg); color:var(--text); font-family:var(--font-body); fo
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-// ═════════════════════════════════════════════════════════════════
-//  CONFIG
-// ═════════════════════════════════════════════════════════════════
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyYsdeiYmNKUXqYP9avigPTL0alC2OxHo9stJ1civCa_R1xZOA8DcEVSrTnSqovjmyJ/exec'; // e.g. https://script.google.com/macros/s/AKfycb.../exec
+
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyb93RbBEMEr-oThBN5zyMtEzPE3xHbRe_RhcllJNuf5pYXLK9Y6JFTW1bdPZJlwMoa/exec'; // e.g. https://script.google.com/macros/s/AKfycb.../exec
 
 let currentUser    = null;
-let sessionToken   = null; // server-verified session token, issued at login (v6.4)
+let sessionToken   = null;
 let allAgents       = [];
 let mgmtUsers       = [];
 let placeholderLinks = [];
 let userSettings     = { theme:'futuristic', notifications:true, notificationTone:'chime', clickTone:'soft', hasProfilePic:false };
-let profilePicCache   = {}; // email -> base64 data URL
+let profilePicCache   = {};
 let pendingEmail = '', otpMode = 'forgot', _signupPass = '', _verifiedOtp = '';
 let adminMonthIdx = 0, tlMonthIdx = 0, adminBreakdownMonthIdx = 0, adminOverviewMonthIdx = -1, tlOverviewMonthIdx = -1;
 let currentTheme = 'futuristic';
@@ -606,9 +583,6 @@ const METRICS = [
 let chartMetricState = {};
 function getActiveMetrics(id){ if(!chartMetricState[id]) chartMetricState[id]=new Set(METRICS.map(m=>m.key)); return chartMetricState[id]; }
 
-// ═════════════════════════════════════════════════════════════════
-//  THEME
-// ═════════════════════════════════════════════════════════════════
 function setTheme(theme, skipSave) {
   currentTheme = theme;
   document.documentElement.setAttribute('data-theme', theme);
@@ -625,9 +599,6 @@ function setTheme(theme, skipSave) {
   }
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  PASSWORD VISIBILITY TOGGLE
-// ═════════════════════════════════════════════════════════════════
 const EYE_OPEN_PATH = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>';
 const EYE_OFF_PATH  = '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a19.4 19.4 0 0 1 5.06-6.06"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a19.5 19.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
 function togglePassVisibility(inputId, btn) {
@@ -639,9 +610,6 @@ function togglePassVisibility(inputId, btn) {
   btn.setAttribute('aria-label', willShow ? 'Hide password' : 'Show password');
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  SOUND (click tone / notification tone)
-// ═════════════════════════════════════════════════════════════════
 let audioCtx = null;
 function getAudioCtx(){ if(!audioCtx){ try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return audioCtx; }
 function playTone(freq, dur, type) {
@@ -669,9 +637,6 @@ document.addEventListener('click', (e)=>{
   if (e.target.closest('.nav-item, .btn-primary, .theme-btn, .month-tab, .metric-toggle-btn, .tz-btn, .ql-item, .quicklinks-btn, .pass-toggle-btn')) playClickTone();
 }, true);
 
-// ═════════════════════════════════════════════════════════════════
-//  SIDEBAR (left = nav)
-// ═════════════════════════════════════════════════════════════════
 let sidebarOpen = true;
 function toggleSidebar() {
   const sb=document.getElementById('app-sidebar'), ob=document.getElementById('app-open-btn');
@@ -709,7 +674,7 @@ function coreNavForRole(role) {
     {key:'scores',label:'Team Scores',icon:'scores'},
     {key:'lb',label:'Leaderboard',icon:'lb'}
   ];
-  return [ // agent + senior poc
+  return [
     {key:'dash',label:'Dashboard',icon:'dash'},
     {key:'performance',label:'Performance',icon:'perf'},
     {key:'scores',label:'My Scores',icon:'scores'},
@@ -739,9 +704,6 @@ function buildSidebar() {
 }
 function escAttr(s){ return String(s||'').replace(/'/g,"\\'"); }
 
-// ═════════════════════════════════════════════════════════════════
-//  QUICK LINKS DROPDOWN (topbar)
-// ═════════════════════════════════════════════════════════════════
 let qlMenuOpen = false;
 function toggleQuickLinksMenu(e) {
   e && e.stopPropagation();
@@ -798,17 +760,11 @@ function renderCurrentPage() {
   else if (currentPage==='helpme') renderHelpPage();
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  ACTIVITY LOGGING (client-fired events)
-// ═════════════════════════════════════════════════════════════════
 function logEvent(eventType, details) {
   if (!currentUser) return;
   gasGet('logEvent', { email: currentUser.email, name: currentUser.name, role: currentUser.rawRole||currentUser.role, eventType, details: details||'' }).catch(()=>{});
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  INIT
-// ═════════════════════════════════════════════════════════════════
 window.addEventListener('load', async () => {
   document.documentElement.setAttribute('data-theme','futuristic');
   initOtpBoxes(); initParticles(); startClocks();
@@ -831,9 +787,6 @@ function toast(msg, ms=3500){
   const t=document.getElementById('toast'); t.textContent='⬡ '+msg; t.style.opacity='1'; setTimeout(()=>t.style.opacity='0', ms);
 }
 
-// ── NETWORK ──────────────────────────────────────────────────────
-// Both gasGet and gasPost automatically attach the current session
-// token (if any) so the server can verify who's really asking (v6.4).
 async function gasGet(action, params={}) {
   const url = new URL(GAS_URL);
   url.searchParams.set('action', action);
@@ -853,7 +806,6 @@ async function gasPost(action, body={}) {
   try { return JSON.parse(text); } catch(e) { throw new Error('Unexpected server response.'); }
 }
 
-// ── AUTH ─────────────────────────────────────────────────────────
 async function doLogin() {
   const email=document.getElementById('login-email').value.trim().toLowerCase();
   const pass=document.getElementById('login-pass').value;
@@ -984,14 +936,13 @@ function setBtnLoading(id,on){ const btn=document.getElementById(id); if(!btn) r
 
 function doLogout() {
   logEvent('Logout', 'Signed out of REAC Hub');
-  gasGet('logout', {}).catch(()=>{}); // invalidate the server-side session immediately
+  gasGet('logout', {}).catch(()=>{});
   currentUser=null; sessionToken=null; _verifiedOtp=''; _signupPass=''; pendingEmail='';
   sessionStorage.removeItem('reac_user');
   sessionStorage.removeItem('reac_token');
   show('s-login');
 }
 
-// ── DASHBOARD LOADER ─────────────────────────────────────────────
 async function loadDashboard() {
   const [dataRes, phRes, stRes, picRes, allPicsRes] = await Promise.allSettled([
     gasGet('getData'),
@@ -1001,9 +952,6 @@ async function loadDashboard() {
     gasGet('getAllProfilePics')
   ]);
 
-  // If the session token is missing/expired, the server responds with
-  // { success:false, message:'Session expired...' } for getData — treat
-  // that as "not really logged in" and bounce back to the login screen.
   if (dataRes.status==='fulfilled' && dataRes.value && dataRes.value.success === false) {
     hideSplash();
     doLogout();
@@ -1018,12 +966,10 @@ async function loadDashboard() {
 
   if (stRes.status==='fulfilled' && stRes.value.success) userSettings = stRes.value.settings;
 
-  // Populate profile picture cache for EVERY user (so avatars show correctly across
-  // the whole app — leaderboard, team tables, online lists, etc — not just your own).
   if (allPicsRes.status==='fulfilled' && allPicsRes.value.success && allPicsRes.value.images) {
     Object.assign(profilePicCache, allPicsRes.value.images);
   }
-  // Make sure our own picture is present/fresh even if the bulk call failed.
+
   if (picRes.status==='fulfilled' && picRes.value.success && picRes.value.image) profilePicCache[currentUser.email] = picRes.value.image;
 
   setTheme(userSettings.theme||'futuristic', true);
@@ -1098,35 +1044,23 @@ function avgField(agents, monthIdx, field){ const vals=agents.map(a=>pct(a.month
 function latestActiveMonthIdx(agent){ if(!agent||!agent.months) return -1; for(let i=agent.months.length-1;i>=0;i--){const m=agent.months[i]; if(m&&m.count&&m.overall&&m.overall!=='Attrite') return i;} return -1; }
 function latestActiveIdxAcrossAgents(agents){ let best=-1; agents.forEach(a=>{const idx=latestActiveMonthIdx(a); if(idx>best) best=idx;}); return best; }
 
-// v6.6 FIX: team-lead membership must be resolved PER MONTH, not from the
-// agent's most-recently-known teamLeadEmail. An agent who moved from TL A
-// to TL B partway through the year should show under TL A for the earlier
-// months and TL B from the transfer month onward — never under TL B for
-// the entire year (which is the bug being fixed in this file).
 function getTeamForMonth(tlEmail, monthIdx) {
   if (!tlEmail || monthIdx < 0) return [];
   return allAgents.filter(a => a.months?.[monthIdx]?.teamLeadEmail === tlEmail);
 }
-// Broader "ever on this team" superset — used ONLY to scan for month labels
-// and to find the latest active month. Never used to decide which month an
-// agent belongs in — that's always resolved per-month via getTeamForMonth().
+
 function getTeamCandidates(tlEmail) {
   if (!tlEmail) return [];
   return allAgents.filter(a => a.teamLeadEmail === tlEmail || (a.months||[]).some(m => m.teamLeadEmail === tlEmail));
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  CHARTS: line / bar / donut
-// ═════════════════════════════════════════════════════════════════
 function chartTextColors(){ const isDark=currentTheme!=='clean'; return { grid: isDark?'rgba(140,140,140,.1)':'rgba(0,0,0,.06)', tick: isDark?'#8a94a3':'#94a3b8' }; }
 function buildLineChart(canvasId, agentList, tlEmailFilter) {
   const canvas=document.getElementById(canvasId); if(!canvas) return;
   const allMonths=allAgents[0]?.months||[]; const labels=[]; const dataByMetric={};
   METRICS.forEach(m=>dataByMetric[m.key]=[]);
   allMonths.forEach((mDef,mIdx)=>{
-    // v6.6 FIX: when a tlEmailFilter is supplied, re-resolve team membership
-    // for THIS specific month instead of reusing one static list across every
-    // month — otherwise a transferred agent's history gets misattributed.
+
     const pool = tlEmailFilter ? agentList.filter(a=>a.months?.[mIdx]?.teamLeadEmail===tlEmailFilter) : agentList;
     const active=pool.filter(a=>{const m=a.months?.[mIdx]; return m&&m.count&&m.overall!=='Attrite';}); if(!active.length) return;
     labels.push(mDef.label); METRICS.forEach(m=>{const av=avgField(active,mIdx,m.key); dataByMetric[m.key].push(av!==null?parseFloat(av.toFixed(2)):null);}); });
@@ -1183,9 +1117,6 @@ function toggleMetric(canvasId, key, btn) {
     chart.update(); }
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  DASHBOARD PAGE
-// ═════════════════════════════════════════════════════════════════
 function renderDashboard(role) {
   if (role==='admin') return renderAdminOverview();
   if (role==='teamlead') return renderTlOverview();
@@ -1231,9 +1162,6 @@ function renderAgentDash() {
   setTimeout(()=>{ const canvas=document.getElementById(canvasId); if(canvas){canvas.style.maxHeight='180px'; buildLineChart(canvasId,[agent]); const ch=chartInstances[canvasId]; if(ch){ch.options.maintainAspectRatio=false;ch.resize();}} },60);
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  PERFORMANCE PAGE (donut + score bands + rank/trend panel)
-// ═════════════════════════════════════════════════════════════════
 function renderPerformancePage(role) {
   if (role==='admin') return renderPerformanceManager(null,'var(--purple)','All Teams');
   if (role==='teamlead') return renderPerformanceManager(currentUser.email,'#378ADD','My Team');
@@ -1283,9 +1211,7 @@ function renderPerformanceAgent() {
 }
 function renderPerformanceManager(tlFilter, accent, scopeLabel) {
   const ca = document.getElementById('app-content-area');
-  // v6.6 FIX: "candidates" is the broad set of agents who were EVER on this
-  // TL's team (any month). Actual month-scoped membership is resolved fresh
-  // for every index via teamForMonth(idx) — never reused across months.
+
   const candidates = tlFilter ? getTeamCandidates(tlFilter) : allAgents;
   const teamForMonth = (idx) => (tlFilter && idx>=0) ? candidates.filter(a=>a.months?.[idx]?.teamLeadEmail===tlFilter) : candidates;
   const latestIdx = latestActiveIdxAcrossAgents(candidates);
@@ -1341,9 +1267,6 @@ function renderPerformanceManager(tlFilter, accent, scopeLabel) {
   }, 60);
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  SCORES PAGE (My Scores / Team Scores)
-// ═════════════════════════════════════════════════════════════════
 function renderScoresPage(role) {
   if (role==='teamlead') return renderTlScores();
   return renderAgentScores();
@@ -1367,9 +1290,7 @@ function renderAgentScores() {
 }
 function renderTlScores() {
   const ca = document.getElementById('app-content-area');
-  // v6.6 FIX: candidates = anyone EVER on this TL's team (any month); the
-  // actual roster shown for a given month is resolved inside renderTlTable()
-  // via each agent's month-scoped teamLeadEmail, not this static list.
+
   const candidates = getTeamCandidates(currentUser.email);
   const months = allAgents[0]?.months||[];
   if (!months.length) { ca.innerHTML='<div class="no-data"><div class="nd-icon">📊</div>No team data available.</div>'; return; }
@@ -1389,9 +1310,7 @@ function tlMonthSwitch(idx){ tlMonthIdx=idx; const candidates=getTeamCandidates(
 function renderTlTable(candidates, monthIdx) {
   const thead=document.getElementById('tl-scores-thead'), tbody=document.getElementById('tl-scores-tbody'); if(!thead||!tbody) return;
   thead.innerHTML='<th>Rank</th><th>Agent</th><th>Count</th><th>TPS</th><th>Attendance</th><th>QA Score</th><th>Overall</th>';
-  // v6.6 FIX: resolve THIS month's actual roster from the month-scoped
-  // teamLeadEmail, so a transferred agent only appears here for the months
-  // they were genuinely on this team.
+
   const team = candidates.filter(a=>a.months?.[monthIdx]?.teamLeadEmail===currentUser.email);
   const sorted=[...team].sort((a,b)=>(parseInt(a.months?.[monthIdx]?.rank)||9999)-(parseInt(b.months?.[monthIdx]?.rank)||9999));
   tbody.innerHTML = sorted.map(a=>{ const m=a.months?.[monthIdx];
@@ -1401,15 +1320,9 @@ function renderTlTable(candidates, monthIdx) {
       <td style="font-family:var(--font-mono)">${m.count||'—'}</td><td>${fmtPct(m.tps)}</td><td>${fmtPct(m.attendance)}</td><td>${fmtPct(m.qa)}</td><td>${scoreBarHTML(m.overall)}</td></tr>`; }).join('');
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  LEADERBOARD
-// ═════════════════════════════════════════════════════════════════
 function renderLeaderboardPage(role) {
   if (role==='admin') return renderLeaderboard(null, 'var(--purple)', true);
-  // v6.6 FIX: pass the TL's email through and let renderLeaderboard() decide
-  // "my team" membership per-row using that row's OWN month's teamLeadEmail
-  // (the leaderboard is always shown for a single latest month, so this is
-  // a one-month lookup, but it must still be the month-scoped field).
+
   renderLeaderboard(currentUser.email, '#378ADD', false);
 }
 function renderLeaderboard(tlEmailForHighlight, accent, isAdmin) {
@@ -1429,9 +1342,7 @@ function renderLeaderboard(tlEmailForHighlight, accent, isAdmin) {
     <div class="panel"><div class="panel-title" style="color:${accent}">Full Rankings — ${latestLabel}${!isAdmin?' (Your team highlighted)':''}</div>
       <div style="overflow-x:auto"><table class="data-table"><thead><tr><th>Rank</th><th>Agent</th><th>Team Lead</th><th>TPS</th><th>Attendance</th><th>QA</th><th>Overall</th></tr></thead><tbody>
         ${sorted.map(a=>{ const m=a.months[latestIdx];
-          // v6.6 FIX: team-lead attribution (both the displayed TL and the
-          // "my team" highlight) must come from THIS agent's THIS-month
-          // teamLeadEmail, not the stale top-level field.
+
           const rowTlEmail = m.teamLeadEmail;
           const tl=mgmtUsers.find(u=>u.email===rowTlEmail);
           const isMyTeam = !isAdmin && tlEmailForHighlight && rowTlEmail===tlEmailForHighlight;
@@ -1442,9 +1353,6 @@ function renderLeaderboard(tlEmailForHighlight, accent, isAdmin) {
       </tbody></table></div></div></div>`;
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  ADMIN: OVERVIEW / ALL AGENTS / ACTIVITY LOG
-// ═════════════════════════════════════════════════════════════════
 function renderAdminOverview() {
   const ca = document.getElementById('app-content-area');
   const allMonths = allAgents[0]?.months||[];
@@ -1478,7 +1386,7 @@ function renderAdminOverview() {
     <div class="panel"><div class="panel-title" style="color:var(--purple)">Score Rankings — ${selLabel}</div><div style="overflow-x:auto"><table class="data-table">
       <thead><tr><th>Rank</th><th>Agent</th><th>Team Lead</th><th>TPS</th><th>Attendance</th><th>QA</th><th>Overall</th></tr></thead><tbody>
         ${[...active].sort((a,b)=>(parseInt(a.months[selIdx]?.rank)||9999)-(parseInt(b.months[selIdx]?.rank)||9999)).map(a=>{ const m=a.months[selIdx];
-          // v6.6 FIX: month-scoped team lead, not the stale top-level field.
+          
           const tl=mgmtUsers.find(u=>u.email===m.teamLeadEmail);
           return `<tr><td>${rankBadgeHTML(m.rank)}</td><td><div class="agent-cell">${avatarHTML(a,28)}<span class="agent-cell-name">${a.name}</span></div></td><td><span class="team-chip">${tl?tl.name:'—'}</span></td>
             <td>${fmtPct(m.tps)}</td><td>${fmtPct(m.attendance)}</td><td>${fmtPct(m.qa)}</td><td>${scoreBarHTML(m.overall)}</td></tr>`; }).join('')}
@@ -1487,9 +1395,7 @@ function renderAdminOverview() {
 function adminOverviewMonthSwitch(idx) { adminOverviewMonthIdx = parseInt(idx); renderAdminOverview(); }
 function buildTeamBreakdownCards(leads, monthIdx) {
   return leads.map(tl=>{
-    // v6.6 FIX: this month's actual team, resolved via each agent's
-    // month-scoped teamLeadEmail — not the stale top-level field, which
-    // used to show every agent under wherever they ended up latest.
+
     const team=allAgents.filter(a=>a.months?.[monthIdx]?.teamLeadEmail===tl.email);
     const teamActive=team.filter(a=>{const m=a.months?.[monthIdx]; return m&&m.count&&m.overall!=='Attrite';});
     const avTps=avgField(teamActive,monthIdx,'tps'), avAtt=avgField(teamActive,monthIdx,'attendance'), avQa=avgField(teamActive,monthIdx,'qa'), avOv=avgField(teamActive,monthIdx,'overall');
@@ -1525,8 +1431,7 @@ function renderAdminAgentsTable(monthIdx) {
   const sorted=[...allAgents].sort((a,b)=>(parseInt(a.months?.[monthIdx]?.rank)||9999)-(parseInt(b.months?.[monthIdx]?.rank)||9999));
   tbody.innerHTML = sorted.filter(a=>!q||a.name.toLowerCase().includes(q)||a.email.includes(q)).map(a=>{
     const m=a.months?.[monthIdx];
-    // v6.6 FIX: month-scoped team lead lookup, so the "Team Lead" column
-    // reflects who this agent actually reported to THAT month.
+
     const tl=mgmtUsers.find(u=>u.email===m?.teamLeadEmail);
     const nameCell = `<div class="agent-cell">${avatarHTML(a,28)}<div><div class="agent-cell-name">${a.name}</div><div class="agent-cell-sub">${a.email}</div></div></div>`;
     if (!m||!m.count) return `<tr><td>—</td><td>${nameCell}</td><td><span class="team-chip">${tl?tl.name:'—'}</span></td><td colspan="5" style="color:var(--text3)">No data this month</td></tr>`;
@@ -1539,10 +1444,7 @@ function filterAdminTable(){ renderAdminAgentsTable(adminMonthIdx); }
 async function renderActivityLog() {
   const ca = document.getElementById('app-content-area');
   const role = currentUser.role;
-  // Agents, Senior POCs, and Team Leads may only ever see their OWN activity.
-  // Only Admin/Master Admin can see activity for every user in the system.
-  // (Server enforces this by resolving email/role from the verified session —
-  // see actionGetActivity in Code.gs v6.4 — not from anything sent here.)
+
   const scopeCopy = role==='admin' ? 'Login, logout, and activity for every user in the system.' : 'Your own login, logout, and activity history.';
   const scopeTag = role==='admin' ? 'ALL USERS' : 'MY ACTIVITY';
   ca.innerHTML = `<div class="page-section"><div class="page-header"><div class="page-tag">// ${scopeTag}</div><h1>Activity Log</h1><p>${scopeCopy}</p></div>
@@ -1559,17 +1461,10 @@ async function renderActivityLog() {
   } catch(e) { document.getElementById('activity-log-body').innerHTML = '<div class="no-data">Could not load activity log.</div>'; }
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  TEAM LEAD OVERVIEW
-// ═════════════════════════════════════════════════════════════════
 function renderTlOverview() {
   const ca = document.getElementById('app-content-area');
   const tlEmail = currentUser.email;
-  // v6.6 FIX: candidates = anyone EVER on this TL's team (any month) — used
-  // only to find month labels / latest-active-month. The actual roster for
-  // a given month (myTeam below) is always resolved fresh via each agent's
-  // month-scoped teamLeadEmail, so transferred agents land in the right
-  // month's team instead of showing under their latest TL for the whole year.
+
   const candidates = getTeamCandidates(tlEmail);
   const allMonths = allAgents[0]?.months || [];
   const latestIdx = latestActiveIdxAcrossAgents(candidates);
@@ -1607,9 +1502,6 @@ function renderTlOverview() {
 }
 function tlOverviewMonthSwitch(idx) { tlOverviewMonthIdx = parseInt(idx); renderTlOverview(); }
 
-// ═════════════════════════════════════════════════════════════════
-//  SETTINGS PAGE
-// ═════════════════════════════════════════════════════════════════
 function renderSettingsPage() {
   const ca = document.getElementById('app-content-area');
   const pic = profilePicCache[currentUser.email];
@@ -1695,9 +1587,6 @@ function handlePicFile(file) {
   reader.readAsDataURL(file);
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  PROFILE PAGE
-// ═════════════════════════════════════════════════════════════════
 function renderProfilePage() {
   const ca = document.getElementById('app-content-area');
   const pic = profilePicCache[currentUser.email];
@@ -1722,9 +1611,6 @@ function renderProfilePage() {
   </div>`;
 }
 
-// ═════════════════════════════════════════════════════════════════
-//  HELP PAGE
-// ═════════════════════════════════════════════════════════════════
 function renderHelpPage() {
   const ca = document.getElementById('app-content-area');
   ca.innerHTML = `<div class="page-section">
@@ -1740,8 +1626,7 @@ function renderHelpPage() {
   </div>`;
 }
 
-// ── CLOCKS ───────────────────────────────────────────────────────
-let clockTz = 'ph'; // 'ph' = Asia/Manila, 'et' = America/New_York
+let clockTz = 'ph';
 function setClockTz(tz) {
   clockTz = tz;
   const phBtn=document.getElementById('tz-btn-ph'), etBtn=document.getElementById('tz-btn-et');
@@ -1758,7 +1643,6 @@ function tickClock() {
 }
 function startClocks() { tickClock(); setInterval(tickClock,1000); }
 
-// ── PARTICLES (futuristic theme only) ─────────────────────────────
 function initParticles() {
   const canvas=document.getElementById('bg-canvas'); const ctx=canvas.getContext('2d');
   let W,H,particles=[];
@@ -1777,7 +1661,6 @@ function initParticles() {
   animate();
 }
 
-// ── KEYBOARD ─────────────────────────────────────────────────────
 document.addEventListener('keydown', e => {
   if (e.key==='Enter') {
     if (document.getElementById('s-login').classList.contains('active')) doLogin();
